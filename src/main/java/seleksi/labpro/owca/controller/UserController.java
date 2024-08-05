@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import seleksi.labpro.owca.dto.UserDto;
+import seleksi.labpro.owca.entity.User;
 import seleksi.labpro.owca.service.UserService;
 
 import java.util.List;
@@ -23,23 +24,23 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/products")
-    public String showUsers(Model model) {
-        try {
-            List<UserDto> users = userService.getAllUsers();
-            if (users.isEmpty()) {
-                log.info("No users found");
-            } else {
-                log.info("Number of users found: {}", users.size());
-                log.info("First user: {}", users.get(0));
-            }
-            model.addAttribute("users", users);
-        } catch (Exception e) {
-            log.error("Error retrieving users", e);
-        }
-        return "users/index.html";
+    @GetMapping("/register")
+    public String showRegisterForm(Model model) {
+        model.addAttribute("user", new User());
+        return "pages/register.html";
     }
 
+    @PostMapping("/register")
+    public String processRegistration(User user) {
+        // Save user or handle registration
+        return "redirect:/pages/login/html";
+    }
+
+    @GetMapping("/login")
+    public String showLoginForm() {
+        return "pages/login.html";
+    }
+    
     @PostMapping("/")
     public ResponseEntity<UserDto> createNewUser(@RequestBody UserDto userDto) {
         UserDto savedDto = userService.createUser(userDto);
