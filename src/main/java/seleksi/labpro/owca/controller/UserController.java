@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import seleksi.labpro.owca.dto.UserDto;
-import seleksi.labpro.owca.entity.User;
 import seleksi.labpro.owca.service.UserService;
 
 import java.util.List;
@@ -22,24 +21,6 @@ public class UserController {
 
     public UserController(UserService userService) {
         this.userService = userService;
-    }
-
-
-    @GetMapping("/register")
-    public String showRegisterForm(Model model) {
-        model.addAttribute("user", new User());
-        return "pages/register.html";
-    }
-
-    @PostMapping("/register")
-    public String processRegistration(User user) {
-        // Save user or handle registration
-        return "redirect:/pages/login/html";
-    }
-
-    @GetMapping("/login")
-    public String showLoginForm() {
-        return "pages/login.html";
     }
 
     @GetMapping("/products")
@@ -57,11 +38,6 @@ public class UserController {
             log.error("Error retrieving users", e);
         }
         return "users/index.html";
-    }
-
-    @GetMapping("/")
-    public String home() {
-        return "index.html";
     }
 
     @PostMapping("/")

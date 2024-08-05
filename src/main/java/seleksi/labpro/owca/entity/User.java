@@ -27,7 +27,7 @@ public class User {
     private String email;
 
     @Column(name = "balance", nullable = false)
-    private Long balance;
+    private Integer balance;
 
     @OneToMany(mappedBy = "owner")
     private Set<Film> ownedFilms;
