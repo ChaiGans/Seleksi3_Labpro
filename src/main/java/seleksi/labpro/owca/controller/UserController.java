@@ -29,21 +29,8 @@ public class UserController {
         model.addAttribute("user", new User());
         return "pages/register.html";
     }
-
-    @PostMapping("/register")
-    public String processRegistration(User user) {
-        // Save user or handle registration
-        return "redirect:/pages/login/html";
-    }
-
     @GetMapping("/login")
     public String showLoginForm() {
         return "pages/login.html";
-    }
-    
-    @PostMapping("/")
-    public ResponseEntity<UserDto> createNewUser(@RequestBody UserDto userDto) {
-        UserDto savedDto = userService.createUser(userDto);
-        return new ResponseEntity<>(savedDto, HttpStatus.CREATED);
     }
 }

@@ -9,9 +9,9 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Home Page</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/main.css}" />
-    <link rel="stylesheet" type="text/css" th:href="@{/font.css}" />
-    <link rel="stylesheet" type="text/css" th:href="@{/animate.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/font.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/animate.css}" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Gupter:wght@400;500;700&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
@@ -24,7 +24,7 @@
         <p class="gupter-regular" style="text-align: justify; font-size: 20px">Dive into the world of movies with CinemaScope, your ultimate destination for all things cinema. Discover the latest releases, explore timeless classics, and get exclusive insights into upcoming blockbusters. Whether you're a casual viewer or a film aficionado, CinemaScope brings you closer to the magic of movies. Browse through our extensive library, read reviews, watch trailers, and even book tickets for your next movie experience—all in one place!</p>
         <label class="gupter-medium" style="text-align: center;">~ Experience Cinema Like Never Before ~</label>
         <div class="flex w-full justify-center">
-            <button class="gupter-bold" style="width: 30%; background-color: #ff4500; color: white; padding: 10px 20px; font-size: 16px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">
+            <button class="gupter-bold" th:href="@{/browse}" style="width: 30%; background-color: #ff4500; color: white; padding: 10px 20px; font-size: 16px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">
             Get Started
             </button>
         </div>
