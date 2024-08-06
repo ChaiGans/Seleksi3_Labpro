@@ -8,19 +8,23 @@ public class UserMapper {
         return new UserDto(
                 user.getId(),
                 user.getUsername(),
+                user.getPassword(),
                 user.getEmail(),
                 user.getBalance(),
-                user.getOwnedFilms()
+                user.getOwnedFilms(),
+                user.getRole()
         );
     }
 
     public static User mapToUser(UserDto userDto) {
         return new User(
                 userDto.getId(),
+                userDto.getPassword(),
                 userDto.getUsername(),
                 userDto.getEmail(),
                 userDto.getBalance(),
-                userDto.getOwnedFilms()
+                userDto.getOwnedFilms(),
+                userDto.getRole()
         );
     }
 }
