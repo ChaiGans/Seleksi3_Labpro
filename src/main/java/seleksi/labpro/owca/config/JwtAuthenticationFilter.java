@@ -2,6 +2,7 @@ package seleksi.labpro.owca.config;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
@@ -17,6 +18,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import seleksi.labpro.owca.utils.JwtService;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -30,36 +33,38 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
-        final String authHeader = request.getHeader("Authorization");
-        final String jwt;
-        final String userEmail;
 
+        MutableHttpServletRequest mutableRequest = new MutableHttpServletRequest(request);
 
-        if (authHeader == null || !authHeader.startsWith("Bearer")) {
-            filterChain.doFilter(request, response);
-            return;
+        Optional<Cookie> authTokenCookie = Arrays.stream(request.getCookies() != null ? request.getCookies() : new Cookie[0])
+                .filter(cookie -> "authToken".equals(cookie.getName()))
+                .findFirst();
+
+        if (authTokenCookie.isPresent()) {
+            String jwt = authTokenCookie.get().getValue();
+            mutableRequest.putHeader("Authorization", "Bearer " + jwt);
         }
 
-        jwt = authHeader.substring(7);
-        userEmail = jwtService.extractUsername(jwt);
+        String authHeader = mutableRequest.getHeader("Authorization");
 
-        if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
-            if (jwtService.isTokenValid(jwt, userDetails)) {
-                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                        userDetails,
-                        null,
-                        userDetails.getAuthorities()
-                );
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            String jwt = authHeader.substring(7);
+            String userEmail = jwtService.extractUsername(jwt);
 
-                authenticationToken.setDetails(
-                        new WebAuthenticationDetailsSource().buildDetails(request)
-                );
-
-                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
+                if (jwtService.isTokenValid(jwt, userDetails)) {
+                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                            userDetails, null, userDetails.getAuthorities());
+                    authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(mutableRequest));
+                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                } else {
+                    logger.info("Invalid JWT token.");
+                }
             }
+        } else {
+            logger.info("No Authorization header found or header does not contain a bearer token.");
         }
-
-        filterChain.doFilter(request, response);
+        filterChain.doFilter(mutableRequest, response);
     }
 }

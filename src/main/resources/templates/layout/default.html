@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Application</title>
@@ -14,9 +14,15 @@
                 <span class="text-2xl font-semibold text-white">OWCA</span>
                 <img th:src="@{/images/platipus.png}" style="width: 50px; height: 50px; margin-bottom: 10px" alt="logo platipus">
             </a>
-            <div class="flex md:order-2 space-x-3 rtl:space-x-reverse">
+            <div sec:authorize="!isAuthenticated()" class="flex md:order-2 space-x-3 rtl:space-x-reverse">
                 <a th:href="@{/login}" class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-4 py-2 text-center">Login</a>
                 <a th:href="@{/register}" style="background-color: orangered;" class="text-white font-medium rounded-lg text-sm px-4 py-2 text-center">Register</a>
+            </div>
+            <div sec:authorize="isAuthenticated()" class="flex md:order-2 space-x-3 rtl:space-x-reverse">
+                <a th:href="@{/}" style="text-wrap: nowrap" class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-4 py-2 text-center">Get Started</a>
+                <form th:action="@{/api/v1/auth/logout}" method="post" id="logoutForm">
+                    <button type="submit" style="background-color: orangered; border: none; cursor: pointer;" class="text-white font-medium rounded-lg text-sm px-4 py-2 text-center">Logout</button>
+                </form>
             </div>
             <div style="display: flex; align-items: center; justify-content: center" class="w-full w-auto order-1" id="navbar-cta">
                 <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
@@ -57,5 +63,33 @@
             <span class="block text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2024 <a th:href="@{/index.html}" class="hover:underline">OWCA™</a>. All Rights Reserved.</span>
     </div>
 </footer>
+<script>
+    document.getElementById('logoutForm').onsubmit = function(event) {
+        event.preventDefault();
+        fetch(this.action, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json', // Ensure the content type matches your backend expectations
+            },
+        }).then(response => {
+            // Check if the response is OK (status 200-299)
+            if (response.ok) {
+                window.location.href = '/';
+            } else {
+                // Handle any errors from the server
+                return response.json().then(data => {
+                    if (data.error) {
+                        document.getElementById('errorMsg').textContent = data.message;
+                    } else {
+                        document.getElementById('errorMsg').textContent = 'Logout failed. Please try again.';
+                    }
+                });
+            }
+        }).catch(error => {
+            // Handle any network errors
+            document.getElementById('errorMsg').textContent = 'Logout failed. Please try again.';
+        });
+    };
+</script>
 </body>
 </html>
