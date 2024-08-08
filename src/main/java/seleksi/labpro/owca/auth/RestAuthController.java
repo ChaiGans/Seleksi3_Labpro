@@ -36,7 +36,7 @@ public class RestAuthController {
     private final JwtService jwtService;
 
     @PostMapping("/login")
-    public ResponseEntity<RestAuthResponse> loginWithUsername(
+    public ResponseEntity<RestAuthResponse<?>> loginWithUsername(
             @RequestBody RestAuthRequest request, HttpServletResponse response
     ) {
         var user = userService.findByUsername(request.getUsername());
@@ -80,7 +80,7 @@ public class RestAuthController {
     }
 
     @GetMapping("/self")
-    public ResponseEntity<RestAuthResponse> getSelfDetails(HttpServletRequest request) {
+    public ResponseEntity<RestAuthResponse<?>> getSelfDetails(HttpServletRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null || !authentication.isAuthenticated()) {

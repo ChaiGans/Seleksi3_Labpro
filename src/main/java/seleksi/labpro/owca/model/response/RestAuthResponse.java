@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RestAuthResponse {
+public class RestAuthResponse<T> {
     private Status status;
     private String message;
-    private AuthData data;
+    private T data;
 }
