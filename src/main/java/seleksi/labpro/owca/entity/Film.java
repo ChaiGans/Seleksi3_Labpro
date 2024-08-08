@@ -1,10 +1,7 @@
 package seleksi.labpro.owca.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -15,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "films")
+@Builder
 public class Film {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,6 +20,9 @@ public class Film {
 
     @Column(name = "title", nullable = false)
     private String title;
+
+    @Column(name = "description", nullable = false)
+    private String description;
 
     @Column(name = "director", nullable = false)
     private String director;

@@ -1,6 +1,5 @@
 package seleksi.labpro.owca.auth;
 
-import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -18,15 +17,13 @@ import seleksi.labpro.owca.model.request.AuthenticationRequest;
 import seleksi.labpro.owca.model.request.RestAuthRequest;
 import seleksi.labpro.owca.model.response.AuthData;
 import seleksi.labpro.owca.model.response.AuthenticationResponse;
-import seleksi.labpro.owca.model.response.RestAuthResponse;
+import seleksi.labpro.owca.model.response.RestResponse;
 import seleksi.labpro.owca.model.response.Status;
 import seleksi.labpro.owca.service.UserService;
 import seleksi.labpro.owca.utils.JwtService;
 
-import java.nio.file.attribute.UserPrincipal;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -36,7 +33,7 @@ public class RestAuthController {
     private final JwtService jwtService;
 
     @PostMapping("/login")
-    public ResponseEntity<RestAuthResponse<?>> loginWithUsername(
+    public ResponseEntity<RestResponse<?>> loginWithUsername(
             @RequestBody RestAuthRequest request, HttpServletResponse response
     ) {
         var user = userService.findByUsername(request.getUsername());
@@ -49,7 +46,7 @@ public class RestAuthController {
 
         if (!role.getFirst().get("authority").equals("ADMIN")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                RestAuthResponse
+                RestResponse
                         .builder()
                         .status(Status.error)
                         .message("User credentials does not match.")
@@ -63,7 +60,7 @@ public class RestAuthController {
                 .token(authResponse.getToken())
                 .build();
 
-        RestAuthResponse restAuthResponse = RestAuthResponse.builder()
+        RestResponse restResponse = RestResponse.builder()
                 .status(Status.success)
                 .message("Login successful.")
                 .data(authData)
@@ -76,15 +73,15 @@ public class RestAuthController {
                 .sameSite("Strict")
                 .build();
         response.addHeader("Set-Cookie", cookie.toString());
-        return ResponseEntity.ok(restAuthResponse);
+        return ResponseEntity.ok(restResponse);
     }
 
     @GetMapping("/self")
-    public ResponseEntity<RestAuthResponse<?>> getSelfDetails(HttpServletRequest request) {
+    public ResponseEntity<RestResponse<?>> getSelfDetails(HttpServletRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null || !authentication.isAuthenticated()) {
-            return ResponseEntity.ok(RestAuthResponse.builder()
+            return ResponseEntity.ok(RestResponse.builder()
                     .status(Status.error)
                     .message("User not authenticated")
                     .build());
@@ -100,7 +97,7 @@ public class RestAuthController {
                     .username(jwtService.extractUsername(token))
                     .build();
 
-            return ResponseEntity.ok(RestAuthResponse.builder()
+            return ResponseEntity.ok(RestResponse.builder()
                     .status(Status.success)
                     .message("User details retrieved successfully.")
                     .data(authData)
@@ -108,7 +105,7 @@ public class RestAuthController {
         }
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                RestAuthResponse
+                RestResponse
                         .builder()
                         .status(Status.error)
                         .message("Fail to get self")
