@@ -76,4 +76,9 @@ public class UserServiceImpl implements UserService {
 
         return AuthenticationResponse.builder().token(jwtToken).build();
     }
+
+    @Override
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username).orElse(null);
+    }
 }

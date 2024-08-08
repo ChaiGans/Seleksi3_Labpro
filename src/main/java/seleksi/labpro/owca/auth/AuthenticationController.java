@@ -42,7 +42,7 @@ public class AuthenticationController {
         return ResponseEntity.ok(authResponse);
     }
 
-    @PostMapping("/authenticate")
+    @PostMapping("/login-with-email")
     public ResponseEntity<AuthenticationResponse> register(
             @RequestBody AuthenticationRequest request, HttpServletResponse response
             ) {
@@ -75,4 +75,6 @@ public class AuthenticationController {
         result.put("message", "Logged out successfully");
         return "index.html";
     }
+
+
 }
