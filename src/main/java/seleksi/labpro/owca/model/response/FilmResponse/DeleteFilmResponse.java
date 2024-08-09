@@ -1,4 +1,4 @@
-package seleksi.labpro.owca.model.response;
+package seleksi.labpro.owca.model.response.FilmResponse;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

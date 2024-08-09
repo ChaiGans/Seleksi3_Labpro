@@ -1,4 +1,4 @@
-package seleksi.labpro.owca.controller;
+package seleksi.labpro.owca.controller.RestController;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import seleksi.labpro.owca.entity.Film;
 import seleksi.labpro.owca.model.response.*;
+import seleksi.labpro.owca.model.response.FilmResponse.DeleteFilmResponse;
+import seleksi.labpro.owca.model.response.FilmResponse.FilmResponse;
+import seleksi.labpro.owca.model.response.FilmResponse.GetAllFilmResponse;
 import seleksi.labpro.owca.service.FilmService;
 import seleksi.labpro.owca.utils.FileUtils;
 
@@ -18,7 +21,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/films")
 @RequiredArgsConstructor
-public class FilmController {
+public class FilmRestController {
     private final FilmService filmService;
 
     @GetMapping

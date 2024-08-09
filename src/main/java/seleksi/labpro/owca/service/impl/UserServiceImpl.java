@@ -1,5 +1,6 @@
 package seleksi.labpro.owca.service.impl;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,7 +17,7 @@ import seleksi.labpro.owca.service.UserService;
 import seleksi.labpro.owca.utils.JwtService;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -33,9 +34,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> getAllUsers() {
+    public List<User> getAllUsers() {
         List<User> allUsers = userRepository.findAll();
-        return allUsers.stream().map(user -> UserMapper.mapToUserDto(user)).collect(Collectors.toList());
+        return allUsers;
 
     }
 
@@ -80,5 +81,40 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByUsername(String username) {
         return userRepository.findByUsername(username).orElse(null);
+    }
+
+    @Override
+    public List<User> findByQueryUsername(String query) {
+        List<User> allUser = userRepository.findUsersByUsernameStartingWith(query);
+
+        if (allUser.isEmpty()) {
+            allUser = userRepository.findAll();
+        }
+
+        return allUser;
+    }
+
+    @Override
+    public Optional<User> findUserById(Long id) {
+        return userRepository.findById(id);
+    }
+
+    @Override
+    public void deleteUserById(Long id) {
+        Optional<User> user = userRepository.findById(id);
+
+        if (user.isPresent()) {
+            userRepository.deleteById(id);
+        }
+    }
+
+    @Override
+    public User updateUserBalance(Long id, Integer newBalance) {
+        return userRepository.findById(id)
+                .map(user -> {
+                    user.setBalance(user.getBalance() + Long.valueOf(newBalance));
+                    return userRepository.save(user);
+                })
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
     }
 }
