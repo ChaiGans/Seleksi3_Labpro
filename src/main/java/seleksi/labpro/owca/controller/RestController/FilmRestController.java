@@ -12,6 +12,7 @@ import seleksi.labpro.owca.model.response.FilmResponse.FilmResponse;
 import seleksi.labpro.owca.model.response.FilmResponse.GetAllFilmResponse;
 import seleksi.labpro.owca.service.FilmService;
 import seleksi.labpro.owca.utils.FileUtils;
+import seleksi.labpro.owca.utils.S3Utils;
 
 import java.io.IOException;
 import java.util.List;
@@ -31,14 +32,6 @@ public class FilmRestController {
         List<GetAllFilmResponse> filmsResponse = films.stream()
                 .map(film ->
                 {
-                    String coverImageBase64 = "";
-                    try {
-                        if (film.getCoverImageUrl() != null) {
-                            coverImageBase64 = FileUtils.getFileAsBase64String(film.getCoverImageUrl());
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
                     return GetAllFilmResponse.builder()
                             .id(String.valueOf(film.getId()))
                             .title(film.getTitle())
@@ -47,7 +40,7 @@ public class FilmRestController {
                             .genre(film.getGenres())
                             .price(film.getPrice())
                             .duration(film.getDuration())
-                            .cover_image_url(coverImageBase64)
+                            .cover_image_url(film.getCoverImageUrl())
                             .updated_at(String.valueOf(film.getUpdated_at()))
                             .created_at(String.valueOf(film.getCreated_at()))
                             .build();
@@ -91,8 +84,8 @@ public class FilmRestController {
                 .genre(foundFilm.getGenres())
                 .price(foundFilm.getPrice())
                 .duration(foundFilm.getDuration())
-                .video_url(FileUtils.getFileAsBase64String(foundFilm.getVideoUrl()))
-                .cover_image_url(FileUtils.getFileAsBase64String(foundFilm.getCoverImageUrl()))
+                .video_url(S3Utils.generatePresignedUrl(foundFilm.getVideoUrl(), filmService.getBucketName(), filmService.getS3Client()))
+                .cover_image_url(S3Utils.generatePresignedUrl(foundFilm.getCoverImageUrl(), filmService.getBucketName(), filmService.getS3Client()))
                 .created_at(String.valueOf(foundFilm.getCreated_at()))
                 .updated_at(String.valueOf(foundFilm.getUpdated_at()))
                 .build();
@@ -161,7 +154,7 @@ public class FilmRestController {
                         .genre(updatedFilm.getGenres())
                         .price(updatedFilm.getPrice())
                         .duration(updatedFilm.getDuration())
-                        .video_url(updatedFilm.getVideoUrl())
+                        .video_url(S3Utils.generatePresignedUrl(updatedFilm.getVideoUrl(), filmService.getBucketName(), filmService.getS3Client()))
                         .created_at(String.valueOf(updatedFilm.getCreated_at()))
                         .updated_at(String.valueOf(updatedFilm.getUpdated_at()))
                         .build())
@@ -246,8 +239,8 @@ public class FilmRestController {
                         .genre(newFilm.getGenres())
                         .price(newFilm.getPrice())
                         .duration(newFilm.getDuration())
-                        .video_url(FileUtils.getFileAsBase64String(newFilm.getVideoUrl()))
-                        .cover_image_url(FileUtils.getFileAsBase64String(newFilm.getCoverImageUrl()))
+                        .video_url(S3Utils.generatePresignedUrl(newFilm.getVideoUrl(), filmService.getBucketName(), filmService.getS3Client()))
+                        .cover_image_url(S3Utils.generatePresignedUrl(newFilm.getCoverImageUrl(), filmService.getBucketName(), filmService.getS3Client()))
                         .created_at(String.valueOf(newFilm.getCreated_at()))
                         .updated_at(String.valueOf(newFilm.getUpdated_at()))
                         .build())
