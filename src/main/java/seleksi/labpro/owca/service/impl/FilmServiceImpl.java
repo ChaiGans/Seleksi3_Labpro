@@ -80,6 +80,7 @@ public class FilmServiceImpl implements FilmService {
             film.setGenres(updatedFilm.getGenres());
             film.setPrice(updatedFilm.getPrice());
             film.setDuration(updatedFilm.getDuration());
+            film.setUpdated_at(OffsetDateTime.now());
 
             // Replace video file if a new one is uploaded
             if (video != null && !video.isEmpty()) {

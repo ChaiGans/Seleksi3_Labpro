@@ -102,8 +102,73 @@ public class FilmController {
                 .build());
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<RestResponse<?>> updateFilmById(
+            @PathVariable("id") Long id,
+            @RequestParam("title") String title,
+            @RequestParam("description") String description,
+            @RequestParam("director") String director,
+            @RequestParam("release_year") Integer releaseYear,
+            @RequestParam("genre") List<String> genres,
+            @RequestParam("price") Integer price,
+            @RequestParam("duration") Integer duration,
+            @RequestParam(value = "video", required = false) MultipartFile videoBinaryFile,
+            @RequestParam(value = "cover_image", required = false) MultipartFile coverImageBinaryFile
+    ) throws IOException {
+        Optional<Film> foundFilm = filmService.getFilmById(id);
+
+        if (foundFilm.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    RestResponse
+                            .builder()
+                            .status(Status.error)
+                            .message("Film not found")
+                            .data(null)
+                            .build()
+            );
+        }
+
+        Film updatedFilm = filmService.updateFilm(
+                id,
+                Film
+                        .builder()
+                        .title(title)
+                        .description(description)
+                        .director(director)
+                        .releaseYear(releaseYear)
+                        .genres(genres)
+                        .price(price)
+                        .duration(duration)
+                        .build(),
+                videoBinaryFile,
+                coverImageBinaryFile
+        );
+
+        return ResponseEntity.ok(RestResponse
+                .builder()
+                .status(Status.success)
+                .message("Delete success")
+                .data(FilmResponse
+                        .builder()
+                        .id(String.valueOf(updatedFilm.getId()))
+                        .title(updatedFilm.getTitle())
+                        .description(updatedFilm.getDescription())
+                        .director(updatedFilm.getDirector())
+                        .release_year(updatedFilm.getReleaseYear())
+                        .genre(updatedFilm.getGenres())
+                        .price(updatedFilm.getPrice())
+                        .duration(updatedFilm.getDuration())
+                        .video_url(updatedFilm.getVideoUrl())
+                        .created_at(String.valueOf(updatedFilm.getCreated_at()))
+                        .updated_at(String.valueOf(updatedFilm.getUpdated_at()))
+                        .build())
+                .build());
+    }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<RestResponse<?>> deleteFilmById(@PathVariable("id") Long id) {
+    public ResponseEntity<RestResponse<?>> deleteFilmById(
+            @PathVariable("id") Long id
+    ) {
         Optional<Film> foundFilm = filmService.getFilmById(id);
 
         if (foundFilm.isEmpty()) {
