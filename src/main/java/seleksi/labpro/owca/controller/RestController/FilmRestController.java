@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import seleksi.labpro.owca.entity.Film;
+import seleksi.labpro.owca.entity.User;
 import seleksi.labpro.owca.model.response.*;
 import seleksi.labpro.owca.model.response.FilmResponse.DeleteFilmResponse;
 import seleksi.labpro.owca.model.response.FilmResponse.FilmResponse;
@@ -247,5 +248,36 @@ public class FilmRestController {
                 .build();
 
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping(params = "q")
+    public ResponseEntity<RestResponse<?>> getFilmByQuery(@RequestParam("q") Optional<String> query) {
+        List<Film> foundFilms = query.isPresent()
+                ? filmService.findByQueryTitle(query.get())
+                : filmService.getAllFilms();
+
+        return ResponseEntity.ok(
+                RestResponse
+                        .builder()
+                        .status(Status.success)
+                        .message("GET by query title")
+                        .data(
+                                foundFilms.stream().map((film ->
+                                        GetAllFilmResponse
+                                                .builder()
+                                                .id(String.valueOf(film.getId()))
+                                                .title(film.getTitle())
+                                                .director(film.getDirector())
+                                                .release_year(film.getReleaseYear())
+                                                .genre(film.getGenres())
+                                                .price(film.getPrice())
+                                                .duration(film.getDuration())
+                                                .cover_image_url(S3Utils.generatePresignedUrl(film.getCoverImageUrl(), filmService.getBucketName(), filmService.getS3Client()))
+                                                .updated_at(String.valueOf(film.getUpdated_at()))
+                                                .created_at(String.valueOf(film.getCreated_at()))
+                                                .build()))
+                        )
+                        .build()
+        );
     }
 }

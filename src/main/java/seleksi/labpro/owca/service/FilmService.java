@@ -3,6 +3,7 @@ package seleksi.labpro.owca.service;
 import com.amazonaws.services.s3.AmazonS3;
 import org.springframework.web.multipart.MultipartFile;
 import seleksi.labpro.owca.entity.Film;
+import seleksi.labpro.owca.entity.User;
 
 import java.io.IOException;
 import java.util.List;
@@ -16,4 +17,5 @@ public interface FilmService {
     Film createFilm(Film film, MultipartFile video, MultipartFile coverImage) throws IOException;
     Film updateFilm(Long id, Film updatedFilm, MultipartFile video, MultipartFile coverImage) throws IOException;
     Film deleteFilmById(Long id);
+    List<Film> findByQueryTitle(String query);
 }

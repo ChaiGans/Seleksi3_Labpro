@@ -169,4 +169,11 @@ public class FilmServiceImpl implements FilmService {
 
         return null;
     }
+
+    @Override
+    public List<Film> findByQueryTitle(String query) {
+        List<Film> foundFilms = filmRepository.findUsersByTitleContains(query);
+
+        return foundFilms;
+    }
 }
