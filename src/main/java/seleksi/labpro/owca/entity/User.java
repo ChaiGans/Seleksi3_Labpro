@@ -35,8 +35,13 @@ public class User implements UserDetails {
     @Column(name = "balance", nullable = false)
     private Long balance;
 
-    @OneToMany(mappedBy = "owner")
-    private Set<Film> ownedFilms;
+    @ManyToMany
+    @JoinTable(
+            name = "user_films",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "film_id")
+    )
+    private List<Film> ownedFilms;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)

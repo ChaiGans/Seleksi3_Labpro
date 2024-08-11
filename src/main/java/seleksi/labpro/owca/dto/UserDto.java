@@ -7,6 +7,7 @@ import lombok.Setter;
 import seleksi.labpro.owca.entity.Film;
 import seleksi.labpro.owca.entity.Role;
 
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -19,7 +20,7 @@ public class UserDto {
     private String password;
     private String email;
     private Long balance;
-    private Set<Film> ownedFilms;
+    private List<Film> ownedFilms;
     private Role role;
 
     @Override

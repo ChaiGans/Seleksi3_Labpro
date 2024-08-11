@@ -18,4 +18,5 @@ public interface FilmService {
     Film updateFilm(Long id, Film updatedFilm, MultipartFile video, MultipartFile coverImage) throws IOException;
     Film deleteFilmById(Long id);
     List<Film> findByQueryTitle(String query);
+    Boolean isBought(Long id, User user);
 }

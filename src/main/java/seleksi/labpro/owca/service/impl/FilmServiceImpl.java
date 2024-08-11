@@ -2,19 +2,15 @@ package seleksi.labpro.owca.service.impl;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import seleksi.labpro.owca.entity.Film;
+import seleksi.labpro.owca.entity.User;
 import seleksi.labpro.owca.respository.FilmRepository;
 import seleksi.labpro.owca.service.FilmService;
 import seleksi.labpro.owca.utils.S3Utils;
 
-import javax.swing.text.html.Option;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -175,5 +171,16 @@ public class FilmServiceImpl implements FilmService {
         List<Film> foundFilms = filmRepository.findUsersByTitleContains(query);
 
         return foundFilms;
+    }
+
+    @Override
+    public Boolean isBought(Long id, User user) {
+        Optional<Film> foundFilm = filmRepository.findById(id);
+
+        if (foundFilm.isEmpty()) {
+            return Boolean.FALSE;
+        }
+
+        return foundFilm.get().getUsers().contains(user);
     }
 }

@@ -48,9 +48,8 @@ public class Film {
     @Column(name = "updated_at", nullable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private OffsetDateTime updated_at;
 
-    @ManyToOne
-    @JoinColumn(name = "owner_id")
-    private User owner;
+    @ManyToMany(mappedBy = "ownedFilms")
+    private List<User> users;
 
     @ElementCollection
     @CollectionTable(name = "film_genres", joinColumns = @JoinColumn(name = "film_id"))
