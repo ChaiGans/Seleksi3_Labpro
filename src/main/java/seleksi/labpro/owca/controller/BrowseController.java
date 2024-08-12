@@ -6,6 +6,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import seleksi.labpro.owca.dto.FilmDto;
 import seleksi.labpro.owca.entity.Film;
@@ -14,12 +15,15 @@ import seleksi.labpro.owca.model.response.AuthData;
 import seleksi.labpro.owca.service.FilmService;
 import seleksi.labpro.owca.service.UserService;
 import seleksi.labpro.owca.utils.JwtService;
+import seleksi.labpro.owca.utils.S3Utils;
 import seleksi.labpro.owca.utils.TimeFormatUtil;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
+@RequestMapping("/browse")
 public class BrowseController {
     private final FilmService filmService;
     private final JwtService jwtService;
@@ -31,9 +35,21 @@ public class BrowseController {
         this.userService = userService;
     }
 
-    @GetMapping("/browse")
-    public String showBrowsePage(Model model, HttpServletRequest request, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "4") int size) {
-        List<Film> allFilms = filmService.getAllFilms();
+    @GetMapping
+    public String showBrowsePage(Model model, HttpServletRequest request, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "4") int size, @RequestParam(value = "q", required = false) Optional<String> query) {
+        List<Film> allFilms = query.isPresent()
+                ? filmService.findByQueryTitle(query.get())
+                : filmService.getAllFilms();
+
+        if (query.isPresent()) {
+            allFilms.forEach(film -> film.setCoverImageUrl(S3Utils.generatePresignedUrl(
+                    film.getCoverImageUrl(),
+                    filmService.getBucketName(),
+                    filmService.getS3Client()
+            )));
+            model.addAttribute("query", query.get());
+        }
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null || !authentication.isAuthenticated()) {
