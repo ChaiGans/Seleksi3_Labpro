@@ -33,7 +33,7 @@
                         <a th:href="@{/browse}" data-path="/browse" class="text-white nav-link">Browse</a>
                     </li>
                     <li sec:authorize="isAuthenticated()">
-                        <a href="#" data-path="/my-list" class="text-white nav-link">My List</a>
+                        <a th:href="@{/my-list}" data-path="/my-list" class="text-white nav-link">My List</a>
                     </li>
                 </ul>
             </div>

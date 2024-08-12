@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Bought List</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+    <link rel="stylesheet" th:href="@{/css/pagination.css}" />
+    <link rel="stylesheet" th:href="@{/css/custom.css}" />
+    <script th:src="@{/js/globals.js}"></script>
+    <script th:src="@{/js/navbar.js}"></script>
+</head>
+<body>
+<div th:replace="~{layout/default :: header}"></div>
+
+<section style="padding: 4rem" class="flex flex-row flex-wrap min-h-screen bg-black">
+    <!--/*@thymesVar id="films" type="List<String>s"*/-->
+    <div class="col-md-4 mb-4" th:each="film : ${films}">
+        <!--/*@thymesVar id="film" type="seleksi.labpro.owca.dto.FilmDto"*/-->
+        <div th:replace="~{components/_filmCard :: filmCard (
+        filmId = ${film.getId()},
+        filmTitle = ${film.getTitle()},
+        filmDescription = ${film.getDescription()},
+        filmDirector = ${film.getDirector()},
+        filmYear = ${film.getReleaseYear()},
+        filmCoverImage = ${film.getCoverImageUrl()},
+        filmPrice = ${film.getPrice()},
+        filmDirector = ${film.getDirector()},
+        filmDuration = ${film.getFormattedTime()},
+        filmGenres = ${film.getGenres()},
+        boughtStatus = ${film.getBought()}
+        )}"></div>
+    </div>
+
+</section>
+<div class="pagination">
+    <ul class="pagination-list">
+        <!--/*@thymesVar id="currentPage" type="java.lang.Integer"*/-->
+        <!--/*@thymesVar id="totalPages" type="java.lang.Integer"*/-->
+        <!--/*@thymesVar id="size" type="java.lang.Integer"*/-->
+        <li th:if="${currentPage != 0}">
+            <a th:href="@{/browse(page=${currentPage - 1}, size=${size})}">&laquo; Previous</a>
+        </li>
+        <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+            <a th:href="@{/browse(page=${i}, size=${size})}" th:text="${i + 1}" th:class="${currentPage == i ? 'active' : ''}"></a>
+        </li>
+        <li th:if="${currentPage + 1 < totalPages}">
+            <a th:href="@{/browse(page=${currentPage + 1}, size=${size})}">Next &raquo;</a>
+        </li>
+    </ul>
+</div>
+<div th:replace="~{layout/default :: footer}"></div>
+</body>
+</html>
