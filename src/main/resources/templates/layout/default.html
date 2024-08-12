@@ -27,13 +27,13 @@
             <div style="display: flex; align-items: center; justify-content: center" class="w-full w-auto order-1" id="navbar-cta">
                 <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
                     <li>
-                        <a th:href="@{/}" class="block py-2 px-3 md:p-0 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:dark:text-blue-500" aria-current="page">Home</a>
+                        <a th:href="@{/}" data-path="/" class="text-white nav-link">Home</a>
                     </li>
-                    <li>
-                        <a th:href="@{/browse}" class="block py-2 px-3 md:p-0 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Browse</a>
+                    <li sec:authorize="isAuthenticated()">
+                        <a th:href="@{/browse}" data-path="/browse" class="text-white nav-link">Browse</a>
                     </li>
-                    <li>
-                        <a href="#" class="block py-2 px-3 md:p-0 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">My List</a>
+                    <li sec:authorize="isAuthenticated()">
+                        <a href="#" data-path="/my-list" class="text-white nav-link">My List</a>
                     </li>
                 </ul>
             </div>
@@ -43,22 +43,6 @@
 
 <footer th:fragment="footer" class="shadow dark:bg-gray-900">
     <div class="w-full max-w-screen-xl mx-auto p-4 md:py-8">
-        <div class="sm:flex sm:items-center sm:justify-center w-full">
-            <ul class="flex flex-wrap items-center mb-6 text-sm font-medium text-gray-500 sm:mb-0 dark:text-gray-400">
-                <li>
-                    <a href="#" class="hover:underline me-4 md:me-6">About</a>
-                </li>
-                <li>
-                    <a href="#" class="hover:underline me-4 md:me-6">Privacy Policy</a>
-                </li>
-                <li>
-                    <a href="#" class="hover:underline me-4 md:me-6">Licensing</a>
-                </li>
-                <li>
-                    <a href="#" class="hover:underline">Contact</a>
-                </li>
-            </ul>
-        </div>
         <hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
             <span class="block text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2024 <a th:href="@{/index.html}" class="hover:underline">OWCA™</a>. All Rights Reserved.</span>
     </div>

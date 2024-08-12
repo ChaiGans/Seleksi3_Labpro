@@ -5,6 +5,9 @@
     <title>Browse Film</title>
     <link rel="stylesheet" th:href="@{/css/main.css}" />
     <link rel="stylesheet" th:href="@{/css/pagination.css}" />
+    <link rel="stylesheet" th:href="@{/css/custom.css}" />
+    <script th:src="@{/js/globals.js}"></script>
+    <script th:src="@{/js/navbar.js}"></script>
 </head>
 <body>
 <div th:replace="~{layout/default :: header}"></div>
@@ -14,6 +17,7 @@
     <div class="col-md-4 mb-4" th:each="film : ${films}">
         <!--/*@thymesVar id="film" type="seleksi.labpro.owca.dto.FilmDto"*/-->
         <div th:replace="~{components/_filmCard :: filmCard (
+        filmId = ${film.getId()},
         filmTitle = ${film.getTitle()},
         filmDescription = ${film.getDescription()},
         filmDirector = ${film.getDirector()},
