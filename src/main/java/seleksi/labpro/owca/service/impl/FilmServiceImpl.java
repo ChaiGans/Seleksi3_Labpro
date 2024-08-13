@@ -155,7 +155,13 @@ public class FilmServiceImpl implements FilmService {
             film.setVideoUrl("deleted");
             film.setCoverImageUrl("deleted");
 
+            if (!film.getUsers().isEmpty()) {
+                film.getUsers().forEach(user -> user.getOwnedFilms().remove(film));
+                film.getUsers().clear();  // Clear the users collection
+            }
+
             film.getGenres().clear();
+
             filmRepository.save(film);
 
             filmRepository.deleteById(id);

@@ -30,7 +30,22 @@ public class DataLoader implements CommandLineRunner {
                     .balance(0L)
                     .role(Role.ADMIN)
                     .build();
+
             userRepository.save(admin);
+        }
+
+        if (userRepository.findByUsername("chaigans").isEmpty()) {
+            // Ordinary user
+            var user = User
+                    .builder()
+                    .username("chaigans")
+                    .password(passwordEncoder.encode("chaigans"))
+                    .email("elbertchailes888@gmail.com")
+                    .balance(0L)
+                    .role(Role.USER)
+                    .build();
+
+            userRepository.save(user);
         }
     }
 }
