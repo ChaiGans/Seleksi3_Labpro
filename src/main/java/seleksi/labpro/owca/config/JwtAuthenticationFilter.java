@@ -8,6 +8,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,8 +20,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import seleksi.labpro.owca.utils.JwtService;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -50,12 +52,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String jwt = authHeader.substring(7);
             String userEmail = jwtService.extractUsername(jwt);
+            List<HashMap<String, String>> roles = jwtService.extractRoles(jwt);
 
             if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
                 if (jwtService.isTokenValid(jwt, userDetails)) {
                     UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                            userDetails, null, userDetails.getAuthorities());
+                            userDetails, null, authorities(Collections.singletonList(roles.getFirst().get("authority"))));
                     authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(mutableRequest));
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                 } else {
@@ -66,5 +69,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             logger.info("No Authorization header found or header does not contain a bearer token.");
         }
         filterChain.doFilter(mutableRequest, response);
+    }
+
+    private Collection<? extends GrantedAuthority> authorities(List<String> roles) {
+        return roles.stream()
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
+                .collect(Collectors.toList());
     }
 }
