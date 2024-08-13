@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Add an event listener to each form
     forms.forEach(form => {
-        console.log("form");
         form.addEventListener('submit', function(event) {
             event.preventDefault(); // Prevent the default form submission
 
@@ -32,7 +31,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 })
                 .catch(error => {
-                    console.error('Error:', error);
                     alert('Purchase failed: Please try again.');
                 });
         });

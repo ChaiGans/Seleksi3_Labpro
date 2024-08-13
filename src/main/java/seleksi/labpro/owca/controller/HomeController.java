@@ -26,9 +26,9 @@ public class HomeController {
 
         String authorizationHeader = request.getHeader("Authorization");
 
-        String token = authorizationHeader.substring(7);
+        if (authorizationHeader != null) {
+            String token = authorizationHeader.substring(7);
 
-        if (token != null) {
             String userAuthEmail = jwtService.extractUsername(token);
 
             User loginUser = userService.findByEmail(userAuthEmail);
