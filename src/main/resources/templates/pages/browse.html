@@ -53,13 +53,13 @@
         <!--/*@thymesVar id="size" type="java.lang.Integer"*/-->
         <!--/*@thymesVar id="query" type="java.lang.String"*/-->
         <li th:if="${currentPage != 0}">
-            <a th:href="@{/browse(page=${currentPage - 1}, size=${size}, query=${query})}">&laquo; Previous</a>
+            <a th:href="@{/browse(page=${currentPage - 1}, size=${size}, q=${query})}">&laquo; Previous</a>
         </li>
         <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
-            <a th:href="@{/browse(page=${i}, size=${size}, query=${query})}" th:text="${i + 1}" th:class="${currentPage == i ? 'active' : ''}"></a>
+            <a th:href="@{/browse(page=${i}, size=${size}, q=${query})}" th:text="${i + 1}" th:class="${currentPage == i ? 'active' : ''}"></a>
         </li>
         <li th:if="${currentPage + 1 < totalPages}">
-            <a th:href="@{/browse(page=${currentPage + 1}, size=${size}, query=${query})}">Next &raquo;</a>
+            <a th:href="@{/browse(page=${currentPage + 1}, size=${size}, q=${query})}">Next &raquo;</a>
         </li>
     </ul>
 </div>
