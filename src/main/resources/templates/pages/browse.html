@@ -29,7 +29,10 @@
     <label style="background-color: aqua; padding: 10px 20px; border-radius: 100px; font-style: italic" class="font-bold" th:text="'Your balance :' + '🪙 ' + ${balance}"></label>
 </div>
 
-<section style="padding: 4rem" class="flex flex-row flex-wrap min-h-screen bg-black">
+<section style="padding: 4rem" class="flex justify-center items-center flex-row flex-wrap min-h-screen bg-black">
+    <h1 th:if="${films.size()} == 0" style="color: white; font-size: 80px; text-align: center">
+        BROWSE LIST IS EMPTY.
+    </h1>
     <!--/*@thymesVar id="films" type="List<String>s"*/-->
     <div class="col-md-4 mb-4" th:each="film : ${films}">
         <!--/*@thymesVar id="film" type="seleksi.labpro.owca.dto.FilmDto"*/-->
@@ -49,7 +52,7 @@
     </div>
 
 </section>
-<div class="pagination">
+<div th:if="${films.size() > 0}" class="pagination">
     <ul class="pagination-list">
         <!--/*@thymesVar id="currentPage" type="java.lang.Integer"*/-->
         <!--/*@thymesVar id="totalPages" type="java.lang.Integer"*/-->
