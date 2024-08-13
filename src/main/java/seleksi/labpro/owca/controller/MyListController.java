@@ -54,7 +54,7 @@ public class MyListController {
                 .filter(film -> filmService.isBought(film.getId(), loginUser))
                 .collect(Collectors.toList());
 
-        int totalFilms = allFilms.size();
+        int totalFilms = boughtFilms.size();
         int fromIndex = page * size;
         int toIndex = Math.min(fromIndex + size, totalFilms);
 

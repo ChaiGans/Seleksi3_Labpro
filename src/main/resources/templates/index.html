@@ -2,6 +2,7 @@
 <html
     lang="en"
     xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
 >
 <head>
     <meta charset="UTF-8">
@@ -22,13 +23,16 @@
 <div th:replace="~{layout/default :: header}"></div>
 <section class="flex flex-row flex-1 bg-black" style="padding: 50px">
     <div class="flex flex-col h-full w-full justify-center space-y-8 text-white">
-        <label style="font-size: 45px; color: red" class="gupter-bold">Welcome to OWCA!</label>
+        <label style="font-size: 45px; color: red" class="gupter-bold" sec:authorize="!isAuthenticated()">Welcome to OWCA!</label>
+        <label style="font-size: 45px; color: red" class="gupter-bold" sec:authorize="isAuthenticated()" th:text="'Welcome to OWCA, ' + ${username} + '!'" ></label>
         <p class="gupter-regular" style="text-align: justify; font-size: 20px">Dive into the world of movies with CinemaScope, your ultimate destination for all things cinema. Discover the latest releases, explore timeless classics, and get exclusive insights into upcoming blockbusters. Whether you're a casual viewer or a film aficionado, CinemaScope brings you closer to the magic of movies. Browse through our extensive library, read reviews, watch trailers, and even book tickets for your next movie experience—all in one place!</p>
         <label class="gupter-medium" style="text-align: center;">~ Experience Cinema Like Never Before ~</label>
         <div class="flex w-full justify-center">
-            <button class="gupter-bold" th:href="@{/browse}" style="width: 30%; background-color: #ff4500; color: white; padding: 10px 20px; font-size: 16px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">
-            Get Started
-            </button>
+            <a th:href="@{/browse}" class="w-full justify-center flex">
+                <button class="gupter-bold"  style="width: 30%; background-color: #ff4500; color: white; padding: 10px 20px; font-size: 16px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">
+                    Get Started
+                </button>
+            </a>
         </div>
 
     </div>

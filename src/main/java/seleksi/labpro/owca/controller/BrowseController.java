@@ -18,6 +18,7 @@ import seleksi.labpro.owca.utils.JwtService;
 import seleksi.labpro.owca.utils.S3Utils;
 import seleksi.labpro.owca.utils.TimeFormatUtil;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -67,11 +68,15 @@ public class BrowseController {
 
         User loginUser = userService.findByEmail(userAuthEmail);
 
+        List<Film> sortedFilms = allFilms.stream()
+                .sorted(Comparator.comparing(film -> filmService.isBought(film.getId(), loginUser)))
+                .collect(Collectors.toList());
+
         int totalFilms = allFilms.size();
         int fromIndex = page * size;
         int toIndex = Math.min(fromIndex + size, totalFilms);
 
-        List<FilmDto> filmDTOs = allFilms.subList(fromIndex, toIndex).stream().map(film -> new FilmDto(
+        List<FilmDto> filmDTOs = sortedFilms.subList(fromIndex, toIndex).stream().map(film -> new FilmDto(
                 Math.toIntExact(film.getId()),
                 film.getCoverImageUrl(),
                 film.getDescription(),
@@ -88,6 +93,7 @@ public class BrowseController {
         model.addAttribute("currentPage", page);
         model.addAttribute("size", size);
         model.addAttribute("totalPages", (totalFilms + size - 1) / size);
+        model.addAttribute("balance", loginUser.getBalance());
 
         return "pages/browse.html";
     }
