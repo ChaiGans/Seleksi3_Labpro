@@ -23,10 +23,17 @@
                     style="background-color: limegreen; padding: 10px 4px; border-radius: 10px; font-style: oblique; color: antiquewhite"
                     class="buy-button font-bold w-full">Buy
             </button>
-            <p style="color: red; text-align: end; font-style: italic" class="font-bold" th:if="${boughtStatus}">
-                BOUGHT
-            </p>
         </form>
+        <button
+                style="background-color: cornflowerblue; padding: 10px 4px; border-radius: 10px; font-style: oblique; color: antiquewhite; margin-top: 15px; margin-bottom: 15px"
+                class="filmCard font-bold w-full"
+                th:attr="data-film-id=${filmId}"
+        >
+            View Detail
+        </button>
+        <p style="color: red; text-align: end; font-style: italic" class="font-bold" th:if="${boughtStatus}">
+            BOUGHT
+        </p>
     </div>
 </div>
 

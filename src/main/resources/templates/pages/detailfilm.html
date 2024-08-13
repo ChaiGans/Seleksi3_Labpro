@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Film Details</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+    <link rel="stylesheet" th:href="@{/css/pagination.css}" />
+    <link rel="stylesheet" th:href="@{/css/custom.css}" />
+    <script th:src="@{/js/globals.js}"></script>
+    <script th:src="@{/js/navbar.js}"></script>
+    <style>
+        .film-card {
+            background-color: #1a1a1a; /* Dark background for the film card */
+            color: white; /* White text color */
+            padding: 2rem; /* Padding around the content */
+            border-radius: 8px; /* Rounded corners */
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+            width: 70%;
+        }
+
+        .film-description {
+            background-color: #333; /* Slightly lighter background for the description */
+            padding: 1rem; /* Padding inside the description box */
+            border-radius: 4px; /* Rounded corners for the description box */
+            color: #ddd; /* Light grey text for readability */
+        }
+
+        .film-meta label {
+            margin-right: 1rem; /* Space between labels */
+        }
+
+        .film-image img {
+            max-width: 100%; /* Ensure the image is not oversized */
+            border-radius: 8px; /* Rounded corners for the image */
+        }
+    </style>
+</head>
+<body>
+<div th:replace="~{layout/default :: header}"></div>
+
+<!--/*@thymesVar id="film" type="seleksi.labpro.owca.entity.Film"*/-->
+<section class="bg-black min-h-screen flex flex-col items-center justify-center">
+    <div class="film-card flex flex-row">
+        <div class="flex items-center justify-center film-image w-1/2">
+            <img style="max-width: 300px" th:src="${film.getCoverImageUrl()}" alt="Film Cover Image">
+        </div>
+        <div class="film-details w-1/2 flex flex-col space-y-4">
+            <h2 class="text-2xl font-bold" style="font-style: italic" th:text="${film.getTitle()} + ' (' + ${film.getReleaseYear()} + ')'"></h2>
+            <label th:text="'Genres: ' + ${film.getGenres()}"></label>
+            <label th:text="'Price: ' + ${film.getPrice()} + ' 🪙'"></label>
+            <label th:text="'Director: ' + ${film.getDirector()}"></label>
+            <!--/*@thymesVar id="formattedDuration" type="java.lang.String"*/-->
+            <label th:text="'Duration: ' + ${formattedDuration}"></label>
+            <div class="film-description" th:text="${film.getDescription()}"></div>
+        </div>
+    </div>
+    <!--/*@thymesVar id="isBought" type="java.lang.Boolean"*/-->
+    <div style="margin-top: 30px; display: flex; flex-direction: column">
+        <div style="display: flex; flex-direction: column" th:if="${!isBought}">
+            <label style="color: white; font-size: 30px" class="font-bold">Buy to watch trailer</label>
+            <form method="post" class="buyForm w-full" th:action="@{'/action/buy/' + ${film.getId()}}">
+                <button
+                        style="background-color: limegreen; padding: 10px 4px; border-radius: 10px; font-style: oblique; color: antiquewhite"
+                        class="buy-button font-bold w-full">Buy
+                </button>
+            </form>
+        </div>
+        <video th:if="${isBought}" width="640" height="480" controls>
+            <source th:src="${film.getVideoUrl()}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+</section>
+<div th:replace="~{layout/default :: footer}"></div>
+</body>
+</html>
