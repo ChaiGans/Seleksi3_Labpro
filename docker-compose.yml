@@ -1,0 +1,48 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      dockerfile: Dockerfile
+      context: ./
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgresql:5432/owca
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_JPA_HIBERNATE_DDL-AUTO: update
+      AWS_S3_ENDPOINTURL: https://7076bb96d38b123ec74a7843bc674a94.r2.cloudflarestorage.com
+      AWS_S3_REGION: apac
+      AWS_ACCESSKEY: 7af4bd716d17248f68a344eb72a767b3
+      AWS_SECRETKEY: 32bb6b0135173d6ecddbc4a2328584834f8c834ea41e80b5e1299e60393303bb
+      AWS_SESSION_TOKEN: rsbcN3btPLK5dBWdHKQLtaOlYkJ1klz4TE7W9bDc
+      SPRING_SERVLET_MULTIPART_MAX-FILE-SIZE: 100MB
+      SPRING_SERVLET_MULTIPART_MAX-REQUEST-SIZE: 100MB
+    networks:
+      labpro-network:
+        aliases:
+          - app.labpro.local
+    depends_on:
+      - postgresql
+
+  postgresql:
+    image: postgres:latest
+    container_name: postgresql
+    hostname: postgresql
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: owca
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    networks:
+      labpro-network:
+        aliases:
+          - postgresql.labpro.local
+
+networks:
+  labpro-network:
