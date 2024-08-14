@@ -6,11 +6,11 @@ services:
       dockerfile: Dockerfile
       context: ./
     ports:
-      - "8081:8080"
+      - "8080:8080"
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgresql:5432/owca
       SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: Sukses1123@
+      SPRING_DATASOURCE_PASSWORD: postgres
       SPRING_JPA_HIBERNATE_DDL-AUTO: update
       AWS_S3_ENDPOINTURL: https://7076bb96d38b123ec74a7843bc674a94.r2.cloudflarestorage.com
       AWS_S3_REGION: apac
@@ -33,7 +33,7 @@ services:
     restart: always
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: Sukses1123@
+      POSTGRES_PASSWORD: postgres
       POSTGRES_DB: owca
     volumes:
       - ./data:/var/lib/postgresql/data
