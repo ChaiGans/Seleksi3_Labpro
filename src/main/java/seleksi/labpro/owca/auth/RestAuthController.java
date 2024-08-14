@@ -44,7 +44,7 @@ public class RestAuthController {
 
         List<HashMap<String, String>> role = jwtService.extractRoles(authResponse.getToken());
 
-        if (!role.getFirst().get("authority").equals("ADMIN")) {
+        if (!role.get(0).get("authority").equals("ADMIN")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                 RestResponse
                         .builder()
