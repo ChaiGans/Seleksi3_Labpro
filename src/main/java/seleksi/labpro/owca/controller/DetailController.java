@@ -45,28 +45,26 @@ public class DetailController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if (authentication == null || !authentication.isAuthenticated()) {
-            return "redirect:/login";
-        }
-
         String authorizationHeader = request.getHeader("Authorization");
-        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-            return "redirect:/login";
+
+        if (authorizationHeader != null) {
+            String token = authorizationHeader.substring(7);
+
+            String userAuthEmail = jwtService.extractUsername(token);
+
+            User loginUser = userService.findByEmail(userAuthEmail);
+
+
+            model.addAttribute("isBought", filmService.isBought(film.get().getId(), loginUser));
+        } else {
+            model.addAttribute("isBought", false);
         }
-
-        String token = authorizationHeader.substring(7);
-
-        String userAuthEmail = jwtService.extractUsername(token);
-
-        User loginUser = userService.findByEmail(userAuthEmail);
 
         film.get().setCoverImageUrl(S3Utils.generatePresignedUrl(film.get().getCoverImageUrl(), filmService.getBucketName(), filmService.getS3Client()));
         film.get().setVideoUrl(S3Utils.generatePresignedUrl(film.get().getVideoUrl(), filmService.getBucketName(), filmService.getS3Client()));
 
         model.addAttribute("film", film.get());
-        model.addAttribute("isBought", filmService.isBought(film.get().getId(), loginUser));
         model.addAttribute("formattedDuration", TimeFormatUtil.formatDuration(film.get().getDuration()));
-
         return "pages/detailfilm.html";
     }
 }

@@ -55,7 +55,7 @@
         </div>
     </div>
     <!--/*@thymesVar id="isBought" type="java.lang.Boolean"*/-->
-    <div style="margin-top: 30px; display: flex; flex-direction: column">
+    <div sec:authorize="isAuthenticated()" style="margin-top: 30px; display: flex; flex-direction: column">
         <div style="display: flex; flex-direction: column" th:if="${!isBought}">
             <label style="color: white; font-size: 30px" class="font-bold">Buy to watch trailer</label>
             <form method="post" class="buyForm w-full" th:action="@{'/action/buy/' + ${film.getId()}}">
@@ -64,6 +64,22 @@
                         class="buy-button font-bold w-full">Buy
                 </button>
             </form>
+        </div>
+        <video th:if="${isBought}" width="640" height="480" controls>
+            <source th:src="${film.getVideoUrl()}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    <div sec:authorize="!isAuthenticated()" style="margin-top: 30px; display: flex; flex-direction: column">
+        <div style="display: flex; flex-direction: column" th:if="${!isBought}">
+            <label style="color: white; font-size: 30px" class="font-bold">Login first to buy</label>
+            <a th:href="${'/login'}" class="w-full">
+                <button
+                    style="background-color: limegreen; padding: 10px 4px; border-radius: 10px; font-style: oblique; color: antiquewhite"
+                    class="buy-button font-bold w-full">Login
+                </button>
+            </a>
+
         </div>
         <video th:if="${isBought}" width="640" height="480" controls>
             <source th:src="${film.getVideoUrl()}" type="video/mp4">
