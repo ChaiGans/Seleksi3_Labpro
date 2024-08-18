@@ -5,10 +5,10 @@
     <title>Review Card</title>
 </head>
 <body>
-<div style="background-color: mediumaquamarine; color: black; border-radius: 30px" class="flex flex-col gap-2 p-4" th:fragment="reviewCard (username, rating, comment)">
+<div style="background-color: mediumaquamarine; color: black; border-radius: 30px" class="flex flex-col gap-2 p-4" th:fragment="reviewCard (reviewId, reviewCreatorUsername, rating, comment, currentLoginUsername)">
     <div class="flex justify justify-between">
         <div class="flex gap-2">
-            <span th:text="${username}"></span>
+            <span th:text="${reviewCreatorUsername}"></span>
         </div>
     </div>
     <div style="display: flex; flex-direction: row">
@@ -17,6 +17,14 @@
              style="width: 20px" alt="Star" />
     </div>
     <div th:text="${comment}"></div>
+    <form style="background-color: red; color: white; border-radius: 10px; font-style: italic" class="review-delete-form flex justify-center items-center font-bold" th:action="@{'/reviews/' + ${reviewId}}" method="post">
+        <input type="hidden" name="_method" value="delete" />
+        <input type="hidden" name="reviewId" th:value="${reviewId}" />
+        <button type="submit" th:if="${currentLoginUsername == reviewCreatorUsername}">
+            Delete Review
+        </button>
+    </form>
+
 </div>
 </body>
 </html>

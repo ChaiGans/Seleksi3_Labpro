@@ -56,4 +56,25 @@ public class ReviewServiceImpl implements ReviewService {
                 .filter(review -> review.getFilm().getId().equals(filmId))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public Boolean deleteReview(Long reviewId) {
+        try {
+            reviewRepository.deleteById(reviewId);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @Override
+    public Review getReviewById(Long reviewId) {
+        Optional<Review> review = reviewRepository.findById(reviewId);
+
+        if (review.isEmpty()) {
+            return null;
+        }
+
+        return review.get();
+    }
 }

@@ -40,3 +40,30 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     });
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    const deleteForms = document.querySelectorAll('.review-delete-form');
+    deleteForms.forEach(form => {
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const reviewId = this.querySelector('input[name="reviewId"]').value;
+
+            fetch(`/reviews/${reviewId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Review deleted successfully');
+                        window.location.reload();
+                    } else {
+                        alert('Failed to delete the review');
+                    }
+                })
+                .catch(error => console.error('Error deleting review:', error));
+        });
+    });
+});

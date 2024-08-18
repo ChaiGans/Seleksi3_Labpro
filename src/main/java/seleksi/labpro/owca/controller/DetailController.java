@@ -62,10 +62,10 @@ public class DetailController {
 
 
             model.addAttribute("isBought", filmService.isBought(film.get().getId(), loginUser));
-            model.addAttribute("userId", loginUser.getId());
+            model.addAttribute("currentLoginUser", loginUser);
         } else {
             model.addAttribute("isBought", false);
-            model.addAttribute("userId", 0);
+            model.addAttribute("currentLoginUser", new User());
         }
 
         film.get().setCoverImageUrl(S3Utils.generatePresignedUrl(film.get().getCoverImageUrl(), filmService.getBucketName(), filmService.getS3Client()));

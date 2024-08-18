@@ -97,7 +97,8 @@
     <div  class="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <!--/*@thymesVar id="review" type="seleksi.labpro.owca.dto.ReviewDto"*/-->
         <div th:each="review : ${reviews}" class="p-4 bg-gray-800 rounded-lg shadow-lg">
-            <div th:replace="~{components/_reviewCard :: reviewCard (${review.getCreatorUsername()}, ${review.getRating()}, ${review.getComment()})}"></div>
+            <!--/*@thymesVar id="currentLoginUser" type="seleksi.labpro.owca.entity.User"*/-->
+            <div th:replace="~{components/_reviewCard :: reviewCard (${review.getId()}, ${review.getCreatorUsername()}, ${review.getRating()}, ${review.getComment()}, ${currentLoginUser.getRealUsername()})}"></div>
         </div>
     </div>
     <form sec:authorize="isAuthenticated()" th:action="@{'/reviews'}" style="margin-top: 4rem;" method="POST" id="reviewForm" class="w-full mb-8">
@@ -122,7 +123,8 @@
             </div>
 
             <input name="filmId" style="display: none" th:value="${currentFilmId}">
-            <input name="userId" style="display: none" th:value="${userId}">
+            <!--/*@thymesVar id="currentLoginUser" type="seleksi.labpro.owca.entity.User"*/-->
+            <input name="userId" style="display: none" th:value="${currentLoginUser.getId()}">
 
             <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
                 Submit Review
