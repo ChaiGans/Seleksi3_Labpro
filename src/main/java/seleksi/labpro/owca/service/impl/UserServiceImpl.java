@@ -12,6 +12,7 @@ import seleksi.labpro.owca.mapper.UserMapper;
 import seleksi.labpro.owca.model.request.AuthenticationRequest;
 import seleksi.labpro.owca.model.request.RegisterRequest;
 import seleksi.labpro.owca.model.response.AuthenticationResponse;
+import seleksi.labpro.owca.respository.ReviewRepository;
 import seleksi.labpro.owca.respository.UserRepository;
 import seleksi.labpro.owca.service.UserService;
 import seleksi.labpro.owca.utils.JwtService;
@@ -25,12 +26,14 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final ReviewRepository reviewRepository;
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager, ReviewRepository reviewRepository, ReviewRepository reviewRepository1) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
+        this.reviewRepository = reviewRepository1;
     }
 
     @Override
@@ -111,7 +114,8 @@ public class UserServiceImpl implements UserService {
         Optional<User> user = userRepository.findById(id);
 
         if (user.isPresent()) {
-            userRepository.deleteById(id);
+            user.get().getReviews().forEach(review -> reviewRepository.deleteById(review.getId()));
+            userRepository.deleteById(user.get().getId());
         }
     }
 
