@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import seleksi.labpro.owca.entity.Film;
 import seleksi.labpro.owca.entity.User;
 import seleksi.labpro.owca.respository.FilmRepository;
+import seleksi.labpro.owca.respository.ReviewRepository;
 import seleksi.labpro.owca.service.FilmService;
 import seleksi.labpro.owca.utils.S3Utils;
 
@@ -21,10 +22,12 @@ public class FilmServiceImpl implements FilmService {
     private final FilmRepository filmRepository;
     private final AmazonS3 s3Client;
     private final String bucketName = "labpro-elbert";
+    private final ReviewRepository reviewRepository;
 
-    public FilmServiceImpl(FilmRepository filmRepository, AmazonS3 s3Client) {
+    public FilmServiceImpl(FilmRepository filmRepository, AmazonS3 s3Client, ReviewRepository reviewRepository) {
         this.filmRepository = filmRepository;
         this.s3Client = s3Client;
+        this.reviewRepository = reviewRepository;
     }
 
     public AmazonS3 getS3Client() {
@@ -157,7 +160,17 @@ public class FilmServiceImpl implements FilmService {
 
             if (!film.getUsers().isEmpty()) {
                 film.getUsers().forEach(user -> user.getOwnedFilms().remove(film));
-                film.getUsers().clear();  // Clear the users collection
+                film.getUsers().clear();
+            }
+
+            if (!film.getWishlistedBy().isEmpty()) {
+                film.getWishlistedBy().forEach(user -> user.getWishlistFilms().remove(film));
+                film.getWishlistedBy().clear();
+            }
+
+            if (!film.getReviews().isEmpty()) {
+                film.getReviews().forEach(review -> reviewRepository.deleteById(review.getId()));
+                film.getReviews().clear();
             }
 
             film.getGenres().clear();

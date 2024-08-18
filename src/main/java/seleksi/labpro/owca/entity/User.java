@@ -43,6 +43,17 @@ public class User implements UserDetails {
     )
     private List<Film> ownedFilms;
 
+    @ManyToMany
+    @JoinTable(
+            name = "user_wishlist",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "film_id")
+    )
+    private Set<Film> wishlistFilms;
+
+    @OneToMany(mappedBy = "user")
+    private Set<Review> reviews;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private Role role;

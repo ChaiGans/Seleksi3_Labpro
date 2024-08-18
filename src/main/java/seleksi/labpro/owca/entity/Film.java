@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -21,7 +22,7 @@ public class Film {
     @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "description", nullable = false)
+    @Column(name = "description", length=1000, nullable = false)
     private String description;
 
     @Column(name = "director", nullable = false)
@@ -55,4 +56,11 @@ public class Film {
     @CollectionTable(name = "film_genres", joinColumns = @JoinColumn(name = "film_id"))
     @Column(name = "genre")
     private List<String> genres;
+
+
+    @OneToMany(mappedBy = "film")
+    private Set<Review> reviews;
+
+    @ManyToMany(mappedBy = "wishlistFilms")
+    private Set<User> wishlistedBy;
 }

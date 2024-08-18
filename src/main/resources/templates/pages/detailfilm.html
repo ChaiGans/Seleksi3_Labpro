@@ -8,6 +8,7 @@
     <link rel="stylesheet" th:href="@{/css/custom.css}" />
     <script th:src="@{/js/globals.js}"></script>
     <script th:src="@{/js/navbar.js}"></script>
+    <script th:src="@{/js/reviews.js}"></script>
     <style>
         .film-card {
             background-color: #1a1a1a; /* Dark background for the film card */
@@ -39,7 +40,7 @@
 <div th:replace="~{layout/default :: header}"></div>
 
 <!--/*@thymesVar id="film" type="seleksi.labpro.owca.entity.Film"*/-->
-<section class="bg-black min-h-screen flex flex-col items-center justify-center">
+<section class="bg-black min-h-screen flex flex-col items-center justify-center" style="padding: 100px 0px">
     <div class="film-card flex flex-row">
         <div class="flex items-center justify-center film-image w-1/2">
             <img style="max-width: 300px" th:src="${film.getCoverImageUrl()}" alt="Film Cover Image">
@@ -87,6 +88,50 @@
         </video>
     </div>
 </section>
+
+<!-- Review Section Container -->
+<section style="padding-left: 10rem; padding-right: 10rem; padding-bottom: 10rem" class="bg-black text-white flex flex-col items-center justify-center">
+    <h1 style="font-style: italic; font-size: 40px" class="font-bold italic mb-8">Reviews</h1>
+
+    <!-- Reviews Container -->
+    <div  class="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!--/*@thymesVar id="review" type="seleksi.labpro.owca.dto.ReviewDto"*/-->
+        <div th:each="review : ${reviews}" class="p-4 bg-gray-800 rounded-lg shadow-lg">
+            <div th:replace="~{components/_reviewCard :: reviewCard (${review.getCreatorUsername()}, ${review.getRating()}, ${review.getComment()})}"></div>
+        </div>
+    </div>
+    <form sec:authorize="isAuthenticated()" th:action="@{'/reviews'}" style="margin-top: 4rem;" method="POST" id="reviewForm" class="w-full mb-8">
+        <h1 class="font-bold" style="font-style: italic; font-size: 30px">Leave some review</h1>
+        <div class="flex flex-col gap-4 bg-gray-800 p-4 rounded-lg shadow-lg">
+            <div>
+                <label for="comment" class="block text-sm font-semibold mb-2">Your Comment</label>
+                <textarea id="comment" name="comment" rows="4" required
+                          class="w-full p-2 text-black rounded-md"></textarea>
+            </div>
+
+            <div>
+                <label for="rating" class="block text-sm font-semibold mb-2">Your Rating</label>
+                <select id="rating" name="rating" required class="w-full p-2 text-black rounded-md">
+                    <option value="">Select a Rating</option>
+                    <option value="1">1 - Poor</option>
+                    <option value="2">2 - Fair</option>
+                    <option value="3">3 - Good</option>
+                    <option value="4">4 - Very Good</option>
+                    <option value="5">5 - Excellent</option>
+                </select>
+            </div>
+
+            <input name="filmId" style="display: none" th:value="${currentFilmId}">
+            <input name="userId" style="display: none" th:value="${userId}">
+
+            <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
+                Submit Review
+            </button>
+        </div>
+    </form>
+</section>
+
+
 <div th:replace="~{layout/default :: footer}"></div>
 </body>
 </html>

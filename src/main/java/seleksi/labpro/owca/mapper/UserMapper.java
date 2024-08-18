@@ -12,7 +12,9 @@ public class UserMapper {
                 user.getEmail(),
                 user.getBalance(),
                 user.getOwnedFilms(),
-                user.getRole()
+                user.getRole(),
+                user.getWishlistFilms(),
+                user.getReviews()
         );
     }
 
@@ -24,6 +26,8 @@ public class UserMapper {
                 userDto.getEmail(),
                 userDto.getBalance(),
                 userDto.getOwnedFilms(),
+                userDto.getWishlistFilms(),
+                userDto.getReviews(),
                 userDto.getRole()
         );
     }
