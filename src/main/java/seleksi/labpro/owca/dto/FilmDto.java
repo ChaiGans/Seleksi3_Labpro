@@ -22,4 +22,5 @@ public class FilmDto {
     String director;
     Integer price;
     Boolean bought;
+    Boolean isWishlisted;
 }

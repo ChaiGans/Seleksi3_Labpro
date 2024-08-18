@@ -27,6 +27,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/register", "/login", "/browse", "/api/v1/auth/**", "/reviews").permitAll()
                         .requestMatchers(HttpMethod.GET, "/films", "/films/{id}", "/films", "/details/film/{id}").permitAll()
+                        .requestMatchers("/my-wish-list", "/wishlists").authenticated()
                         .requestMatchers("/users/**", "/films/**").hasRole("ADMIN")
                         .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
                         .anyRequest().authenticated()

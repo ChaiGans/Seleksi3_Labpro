@@ -38,6 +38,11 @@ public class FilmUserImpl implements FilmUserService {
             if (foundUser.get().getBalance() >= foundFilm.get().getPrice()) {
                 addFilmToUser(foundUser.get(), foundFilm.get());
 
+                if (foundUser.get().getWishlistFilms().contains(foundFilm.get())) {
+                    foundUser.get().getWishlistFilms().remove(foundFilm.get());
+                    userRepository.save(foundUser.get());
+                }
+
                 // Deduct user money
                 foundUser.get().setBalance(foundUser.get().getBalance() - foundFilm.get().getPrice());
 

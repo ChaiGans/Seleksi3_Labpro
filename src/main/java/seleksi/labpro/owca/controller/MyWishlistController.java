@@ -12,27 +12,31 @@ import seleksi.labpro.owca.entity.Film;
 import seleksi.labpro.owca.entity.User;
 import seleksi.labpro.owca.service.FilmService;
 import seleksi.labpro.owca.service.UserService;
+import seleksi.labpro.owca.service.WishlistUserService;
 import seleksi.labpro.owca.utils.JwtService;
+import seleksi.labpro.owca.utils.S3Utils;
 import seleksi.labpro.owca.utils.TimeFormatUtil;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
-public class MyListController {
+public class MyWishlistController {
+
     private final FilmService filmService;
     private final JwtService jwtService;
     private final UserService userService;
+    private final WishlistUserService wishlistUserService;
 
-    public MyListController(FilmService filmService, JwtService jwtService, UserService userService) {
+    public MyWishlistController(FilmService filmService, JwtService jwtService, UserService userService, WishlistUserService wishlistUserService) {
         this.filmService = filmService;
         this.jwtService = jwtService;
         this.userService = userService;
+        this.wishlistUserService = wishlistUserService;
     }
 
-    @GetMapping("/my-list")
+    @GetMapping("/my-wish-list")
     public String showMyListPage(Model model, HttpServletRequest request, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "4") int size) {
-        List<Film> allFilms = filmService.getAllFilms();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null || !authentication.isAuthenticated()) {
@@ -52,17 +56,15 @@ public class MyListController {
 
         model.addAttribute("currentLoginUser", loginUser);
 
-        List<Film> boughtFilms = allFilms.stream()
-                .filter(film -> filmService.isBought(film.getId(), loginUser))
-                .collect(Collectors.toList());
+        List<Film> allFilms = wishlistUserService.getAllWishlist(loginUser.getId());
 
-        int totalFilms = boughtFilms.size();
+        int totalFilms = allFilms.size();
         int fromIndex = page * size;
         int toIndex = Math.min(fromIndex + size, totalFilms);
 
-        List<FilmDto> filmDTOs = boughtFilms.subList(fromIndex, toIndex).stream().map(film -> new FilmDto(
+        List<FilmDto> filmDTOs = allFilms.subList(fromIndex, toIndex).stream().map(film -> new FilmDto(
                 Math.toIntExact(film.getId()),
-                film.getCoverImageUrl(),
+                S3Utils.generatePresignedUrl(film.getCoverImageUrl(), filmService.getBucketName(), filmService.getS3Client()),
                 film.getDescription(),
                 film.getTitle(),
                 film.getReleaseYear(),
@@ -70,8 +72,8 @@ public class MyListController {
                 film.getGenres(),
                 film.getDirector(),
                 film.getPrice(),
-                true,
-                true
+                filmService.isBought(film.getId(), loginUser),
+                wishlistUserService.isWishlistedByUserId(film.getId(), loginUser.getId())
         )).collect(Collectors.toList());
 
         model.addAttribute("films", filmDTOs);
@@ -79,6 +81,6 @@ public class MyListController {
         model.addAttribute("size", size);
         model.addAttribute("totalPages", (totalFilms + size - 1) / size);
 
-        return "pages/mylist.html";
+        return "pages/mywishlist.html";
     }
 }

@@ -14,6 +14,7 @@ import seleksi.labpro.owca.entity.User;
 import seleksi.labpro.owca.model.response.AuthData;
 import seleksi.labpro.owca.service.FilmService;
 import seleksi.labpro.owca.service.UserService;
+import seleksi.labpro.owca.service.WishlistUserService;
 import seleksi.labpro.owca.utils.JwtService;
 import seleksi.labpro.owca.utils.S3Utils;
 import seleksi.labpro.owca.utils.TimeFormatUtil;
@@ -29,11 +30,13 @@ public class BrowseController {
     private final FilmService filmService;
     private final JwtService jwtService;
     private final UserService userService;
+    private final WishlistUserService wishlistUserService;
 
-    public BrowseController(FilmService filmService, JwtService jwtService, UserService userService) {
+    public BrowseController(FilmService filmService, JwtService jwtService, UserService userService, WishlistUserService wishlistUserService) {
         this.filmService = filmService;
         this.jwtService = jwtService;
         this.userService = userService;
+        this.wishlistUserService = wishlistUserService;
     }
 
     @GetMapping
@@ -80,12 +83,14 @@ public class BrowseController {
                     film.getGenres(),
                     film.getDirector(),
                     film.getPrice(),
-                    filmService.isBought(film.getId(), loginUser)
+                    filmService.isBought(film.getId(), loginUser),
+                    wishlistUserService.isWishlistedByUserId(film.getId(), loginUser.getId())
             )).collect(Collectors.toList());
 
             model.addAttribute("films", filmDTOs);
 
             model.addAttribute("balance", loginUser.getBalance());
+            model.addAttribute("currentLoginUser", loginUser);
 
         } else {
             List<FilmDto> filmDTOs = allFilms.subList(fromIndex, toIndex).stream().map(film -> new FilmDto(
@@ -98,9 +103,11 @@ public class BrowseController {
                     film.getGenres(),
                     film.getDirector(), 
                     film.getPrice(),
+                    true,
                     true
             )).collect(Collectors.toList());
             model.addAttribute("films", filmDTOs);
+            model.addAttribute("currentLoginUser", new User());
         }
 
         model.addAttribute("currentPage", page);

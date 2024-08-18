@@ -10,8 +10,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const comment = formData.get('comment');
         const rating = formData.get('rating');
 
-        console.log(rating)
-
         // Construct the request body
         const requestBody = {
             filmId: Number(filmId),

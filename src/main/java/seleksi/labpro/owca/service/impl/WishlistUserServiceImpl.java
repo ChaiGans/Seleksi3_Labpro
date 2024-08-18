@@ -7,7 +7,9 @@ import seleksi.labpro.owca.respository.FilmRepository;
 import seleksi.labpro.owca.respository.UserRepository;
 import seleksi.labpro.owca.service.WishlistUserService;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class WishlistUserServiceImpl implements WishlistUserService {
@@ -40,7 +42,7 @@ public class WishlistUserServiceImpl implements WishlistUserService {
     }
 
     @Override
-    public void deleteWishlist(Long userId, Long filmId) {
+    public Boolean deleteWishlist(Long userId, Long filmId) {
         Optional<Film> foundFilm = filmRepository.findById(filmId);
         if (foundFilm.isEmpty()) {
             throw new IllegalStateException("Film not found");
@@ -55,6 +57,38 @@ public class WishlistUserServiceImpl implements WishlistUserService {
         if (user.getWishlistFilms().remove(film)) {
             film.getWishlistedBy().remove(user);
             userRepository.save(user);
+            return true;
         }
+        return  false;
+    }
+
+    @Override
+    public List<Film> getAllWishlist(Long userId) {
+        Optional<User> user = userRepository.findById(userId);
+
+        if (user.isEmpty()) {
+            return null;
+        }
+
+        return user.get().getWishlistFilms().stream().collect(Collectors.toList());
+    }
+
+    @Override
+    public Boolean isWishlistedByUserId(Long filmId, Long userId) {
+        Optional<Film> foundFilm = filmRepository.findById(filmId);
+        if (foundFilm.isEmpty()) {
+            return false;
+        }
+        Optional<User> foundUser = userRepository.findById(userId);
+        if (foundUser.isEmpty()) {
+            return false;
+        }
+        User user = foundUser.get();
+        Film film = foundFilm.get();
+
+        if (user.getWishlistFilms().contains(film)) {
+            return true;
+        }
+        return false;
     }
 }

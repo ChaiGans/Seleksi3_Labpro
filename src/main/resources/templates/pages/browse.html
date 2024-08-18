@@ -8,6 +8,7 @@
     <link rel="stylesheet" th:href="@{/css/custom.css}" />
     <script th:src="@{/js/globals.js}"></script>
     <script th:src="@{/js/navbar.js}"></script>
+    <script th:src="@{/js/wishlists.js}"></script>
 </head>
 <body>
 <div th:replace="~{layout/default :: header}"></div>
@@ -36,6 +37,7 @@
     <!--/*@thymesVar id="films" type="List<String>s"*/-->
     <div class="col-md-4 mb-4" th:each="film : ${films}">
         <!--/*@thymesVar id="film" type="seleksi.labpro.owca.dto.FilmDto"*/-->
+        <!--/*@thymesVar id="currentLoginUser" type="seleksi.labpro.owca.entity.User"*/-->
         <div th:replace="~{components/_filmCard :: filmCard (
         filmId = ${film.getId()},
         filmTitle = ${film.getTitle()},
@@ -47,7 +49,9 @@
         filmDirector = ${film.getDirector()},
         filmDuration = ${film.getFormattedTime()},
         filmGenres = ${film.getGenres()},
-        boughtStatus = ${film.getBought()}
+        boughtStatus = ${film.getBought()},
+        currentLoginId = ${currentLoginUser.getId()},
+        isWishlisted = ${film.getIsWishlisted()}
         )}"></div>
     </div>
 

@@ -35,6 +35,9 @@
                     <li sec:authorize="isAuthenticated()">
                         <a th:href="@{/my-list}" data-path="/my-list" class="text-white nav-link">My List</a>
                     </li>
+                    <li sec:authorize="isAuthenticated()">
+                        <a th:href="@{/my-wish-list}" data-path="/my-wish-list" class="text-white nav-link">Wishlist</a>
+                    </li>
                 </ul>
             </div>
         </div>
