@@ -1,26 +1,35 @@
-document.getElementById('logoutForm').onsubmit = function(event) {
-    event.preventDefault();
-    fetch(this.action, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json', // Ensure the content type matches your backend expectations
-        },
-    }).then(response => {
-        // Check if the response is OK (status 200-299)
-        if (response.ok) {
-            window.location.href = '/';
-        } else {
-            // Handle any errors from the server
-            return response.json().then(data => {
-                if (data.error) {
-                    document.getElementById('errorMsg').textContent = data.message;
+document.addEventListener('DOMContentLoaded', function() {
+    var logoutForm = document.getElementById('logoutForm');
+
+    if (logoutForm) {
+        logoutForm.onsubmit = function(event) {
+            event.preventDefault();
+            fetch(this.action, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }).then(response => {
+                if (response.ok) {
+                    window.location.href = '/';
                 } else {
-                    window.location.href="/";
+                    // Handle any errors from the server
+                    return response.json().then(data => {
+                        if (data.error) {
+                            document.getElementById('errorMsg').textContent = data.message;
+                        } else {
+                            window.location.href="/";
+                        }
+                    });
+                }
+            }).catch(error => {
+                var errorMsg = document.getElementById('errorMsg');
+                if (errorMsg) {
+                    errorMsg.textContent = 'Logout failed. Please try again.';
+                } else {
+                    console.error('Error message element not found');
                 }
             });
-        }
-    }).catch(error => {
-        // Handle any network errors
-        document.getElementById('errorMsg').textContent = 'Logout failed. Please try again.';
-    });
-};
+        };
+    }
+});
