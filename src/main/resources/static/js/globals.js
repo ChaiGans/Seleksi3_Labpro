@@ -52,7 +52,6 @@ function getCookie(name) {
 document.addEventListener('DOMContentLoaded', function() {
     const filmCards = document.querySelectorAll('.filmCard');
     filmCards.forEach(card => {
-        console.log(card.getAttribute('data-film-id'));
         card.addEventListener('click', function() {
             const filmId = this.getAttribute('data-film-id');
             window.location.href = `/details/film/${filmId}`;

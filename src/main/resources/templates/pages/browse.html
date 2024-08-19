@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6" lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1, maximum-scale=5">
+    <meta name="description" content="This is browse page.">
     <title>Browse Film</title>
-    <link rel="stylesheet" th:href="@{/css/main.css}" />
-    <link rel="stylesheet" th:href="@{/css/pagination.css}" />
-    <link rel="stylesheet" th:href="@{/css/custom.css}" />
-    <script th:src="@{/js/globals.js}"></script>
-    <script th:src="@{/js/navbar.js}"></script>
-    <script th:src="@{/js/wishlists.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/main.css}" async/>
+    <link rel="stylesheet" th:href="@{/css/pagination.css}" async/>
+    <link rel="stylesheet" th:href="@{/css/custom.css}" async/>
+    <script th:src="@{/js/globals.js}" defer></script>
+    <script th:src="@{/js/navbar.js}" defer></script>
+    <script th:src="@{/js/wishlists.js}" defer></script>
+    <script th:src="@{/js/auth.js}" defer></script>
 </head>
 <body>
 <div th:replace="~{layout/default :: header}"></div>

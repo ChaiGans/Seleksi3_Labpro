@@ -121,7 +121,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/logout")
-    public String logout(HttpServletResponse response) {
+    public ResponseEntity<RestResponse<?>> logout(HttpServletResponse response) {
         ResponseCookie cookie = ResponseCookie.from("authToken", null)
                 .httpOnly(true)
                 .secure(true)
@@ -131,10 +131,17 @@ public class AuthenticationController {
                 .build();
 
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
-        // Return a success message
+
         Map<String, String> result = new HashMap<>();
         result.put("message", "Logged out successfully");
-        return "index.html";
+        return ResponseEntity.ok(
+                RestResponse
+                        .builder()
+                        .status(Status.success)
+                        .message("Logout successful")
+                        .data(null)
+                        .build()
+        );
     }
 
 

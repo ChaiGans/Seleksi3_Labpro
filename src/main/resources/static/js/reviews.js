@@ -28,12 +28,10 @@ document.addEventListener("DOMContentLoaded", function () {
         })
             .then(response => response.json())
             .then(data => {
-                console.log('Success:', data);
                 alert('Review submitted successfully!');
                 window.location.reload();
             })
             .catch((error) => {
-                console.error('Error:', error);
                 alert('Failed to submit review');
             });
     });
@@ -61,7 +59,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         alert('Failed to delete the review');
                     }
                 })
-                .catch(error => console.error('Error deleting review:', error));
+                .catch(error => alert('Error deleting review:'));
         });
     });
 });

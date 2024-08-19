@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 .then(data => {
                     alert(data.message);
                     window.location.reload();
-                }).catch(error => console.error('Error adding film to wishlist:', error));
+                }).catch(error => alert('Error adding film to wishlist'));
         });
     });
 
@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 .then(data => {
                     alert(data.message);
                     window.location.reload();
-                }).catch(error => console.error('Error removing film from wishlist:', error));
+                }).catch(error => alert('Error removing film from wishlist'));
         });
     });
 });
