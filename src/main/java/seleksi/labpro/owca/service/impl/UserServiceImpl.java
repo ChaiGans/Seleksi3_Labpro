@@ -69,13 +69,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
+        Optional<User> foundUsername = userRepository.findByUsername(request.getEmail());
+
+        String userEmail = foundUsername.isEmpty() ? request.getEmail() : foundUsername.get().getEmail();
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
+                        userEmail,
                         request.getPassword()
                 )
         );
-        var user = userRepository.findByEmail(request.getEmail()).orElseThrow();
+        var user = userRepository.findByEmail(userEmail).orElseThrow();
         var jwtToken = jwtService.generateToken(user);
 
         return AuthenticationResponse.builder().token(jwtToken).build();
