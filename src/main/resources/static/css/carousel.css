@@ -45,6 +45,7 @@
 
 .film-card {
     display: flex;
+    flex-direction: column;
     background-color: #fff;
     border-radius: 8px;
     overflow: hidden;
@@ -52,13 +53,14 @@
 }
 
 .film-card__image {
-    width: 40%;
+    width: 100%;
+    object-position: center;
     object-fit: cover;
 }
 
 .film-card__info {
     padding: 15px;
-    width: 60%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -82,11 +84,15 @@
 }
 
 .topFilm {
-    width: 37.5rem;
+    width: 80%;
     margin: 0 auto;
     padding: 0 1.25rem;
     font-family: 'Lato', sans-serif;
     background-color: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 * {
@@ -122,6 +128,9 @@ ol, li {
     padding-top: 75%;
     filter: drop-shadow(0 0 10px #0003);
     perspective: 100px;
+    width: 100%; /* Full width of the container */
+    max-width: 800px;
+    height: 600px;
 }
 
 .carousel__viewport {
@@ -139,25 +148,22 @@ ol, li {
 
 .carousel__slide {
     position: relative;
+    display: flex;
     flex: 0 0 100%;
-    width: 100%;
-    background-color: #f99;
-}
-
-.carousel__slide:nth-child(even) {
-    background-color: #99f;
+    justify-content: center; /* Centers horizontally */
+    align-items: center;     /* Centers vertically */
+    overflow: hidden;
 }
 
 .carousel__snapper {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    right: 0;   /* Ensures the snapper expands the full width of the slide */
+    bottom: 0;  /* Ensures the snapper expands the full height of the slide */
     display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 400px;
+    justify-content: center; /* Centers horizontally */
+    align-items: center;     /* Centers vertically */
     scroll-snap-align: center;
 }
 
@@ -191,6 +197,7 @@ ol, li {
     bottom: 0;
     left: 0;
     text-align: center;
+    visibility: hidden;
 }
 
 .carousel__navigation-list,
@@ -223,6 +230,7 @@ ol, li {
     border-radius: 50%;
     font-size: 0;
     outline: 0;
+    visibility: hidden;
 }
 
 .carousel::before,
@@ -256,4 +264,34 @@ ol, li {
 
 .carousel::after {
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolygon points='100,50 20,100 20,0' fill='%23fff'/%3E%3C/svg%3E");
+}
+
+@media (min-width: 600px) {
+    .carousel::before,
+    .carousel::after,
+    .carousel__prev,
+    .carousel__next {
+        visibility: visible;
+    }
+
+    .carousel {
+        height: 300px;
+    }
+
+    .film-card {
+        flex-direction: row;
+    }
+
+    .film-card__image {
+        width: 40%;
+    }
+}
+
+@media (min-width: 1200px) {
+    .carousel::before,
+    .carousel::after,
+    .carousel__prev,
+    .carousel__next {
+        margin-top: 50%;
+    }
 }

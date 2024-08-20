@@ -15,6 +15,8 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/animate.css}" async>
     <link rel="stylesheet" type="text/css" th:href="@{/css/custom.css}" async>
     <link rel="stylesheet" type="text/css" th:href="@{/css/carousel.css}" async>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}" async>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}" async>
     <script th:src="@{/js/navbar.js}" defer></script>
     <script th:src="@{/js/auth.js}" defer></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,7 +25,7 @@
 </head>
 <body class="h-screen flex flex-col">
 <div th:replace="~{layout/default :: header}"></div>
-<section class="flex flex-row flex-1 bg-black" style="padding: 50px">
+<section class="main-section">
     <div class="flex flex-col h-full w-full justify-center space-y-8 text-white">
         <label style="font-size: 45px; color: red" class="gupter-bold" sec:authorize="!isAuthenticated()">Welcome to OWCA!</label>
         <label style="font-size: 45px; color: red" class="gupter-bold" sec:authorize="isAuthenticated()" th:text="'Welcome to OWCA, ' + ${username} + '!'" ></label>
@@ -31,18 +33,21 @@
         <label class="gupter-medium" style="text-align: center;">~ Experience Cinema Like Never Before ~</label>
         <div class="flex w-full justify-center">
             <a th:href="@{/browse}" class="w-full justify-center flex">
-                <button class="gupter-bold"  style="width: 30%; background-color: #8B0000; color: white; padding: 10px 20px; font-size: 16px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">
+                <button class="gupter-bold get-started" style="background-color: #8B0000; color: white; padding: 10px 20px; font-size: 16px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">
                     Get Started
                 </button>
             </a>
         </div>
     </div>
-    <img loading="lazy" class="float-animate" style="height: 400px; width: 300px; object-fit: cover; object-position: center; margin-left: 10px;" th:src="@{/images/joker.png}" alt="Joker image">
+    <div class="joker-image flex justify-center items-center">
+        <img loading="lazy" class="float-animate" style="height: 400px; width: 300px; object-fit: cover; object-position: center; margin-left: 10px;" th:src="@{/images/joker.png}" alt="Joker image">
+    </div>
+
 </section>
 
-<div style="background-color: black">
-    <h1 class="gupter-bold" style="color: white; font-style: italic; font-size: 40px; text-align: center">TOP 5 BOUGHT FILMS</h1>
+<div class="topBuyFilm" style="background-color: black">
     <div class="topFilm">
+        <h1 class="gupter-bold" style="color: white; font-style: italic; font-size: 40px; text-align: center">TOP 5 BOUGHT FILMS</h1>
         <section class="carousel" aria-label="Gallery">
             <ol class="carousel__viewport">
                 <li th:each="film, iterStat : ${topBoughtFilms}" th:id="'carousel__slide' + ${iterStat.index+1}"

@@ -1,0 +1,27 @@
+.main-section {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 0%;
+    background-color: black;
+    padding: 50px;
+    margin-top: 80px;
+}
+
+.joker-image {
+    margin-top: 30px;
+}
+
+.topBuyFilm {
+    padding: 20px;
+}
+
+@media (min-width: 48em) {
+    .main-section {
+        flex-direction: row;
+    }
+
+    .joker-image {
+        margin-top: 0px;
+        margin-left: 80px;
+    }
+}

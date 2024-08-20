@@ -7,11 +7,18 @@
     <title>My Bought List</title>
     <link rel="stylesheet" th:href="@{/css/main.css}" />
     <link rel="stylesheet" th:href="@{/css/pagination.css}" />
-    <link rel="stylesheet" th:href="@{/css/custom.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}" async>
     <script th:src="@{/js/globals.js}"></script>
     <script th:src="@{/js/navbar.js}"></script>
     <script th:src="@{/js/wishlists.js}"></script>
     <script th:src="@{/js/auth.js}" defer></script>
+    <style>
+        @media (min-width: 720px) {
+            .film-card {
+                margin-right: 40px;
+            }
+        }
+    </style>
 </head>
 <body>
 <div th:replace="~{layout/default :: header}"></div>

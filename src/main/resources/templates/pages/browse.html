@@ -6,11 +6,18 @@
     <title>Browse Film</title>
     <link rel="stylesheet" th:href="@{/css/main.css}" async/>
     <link rel="stylesheet" th:href="@{/css/pagination.css}" async/>
-    <link rel="stylesheet" th:href="@{/css/custom.css}" async/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}" async>
     <script th:src="@{/js/globals.js}" defer></script>
     <script th:src="@{/js/navbar.js}" defer></script>
     <script th:src="@{/js/wishlists.js}" defer></script>
     <script th:src="@{/js/auth.js}" defer></script>
+    <style>
+        @media (min-width: 720px) {
+            .film-card {
+                margin-right: 40px;
+            }
+        }
+    </style>
 </head>
 <body>
 <div th:replace="~{layout/default :: header}"></div>

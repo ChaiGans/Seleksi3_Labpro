@@ -7,7 +7,7 @@
     <title>Film Details</title>
     <link rel="stylesheet" th:href="@{/css/main.css}" />
     <link rel="stylesheet" th:href="@{/css/pagination.css}" />
-    <link rel="stylesheet" th:href="@{/css/custom.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}" async>
     <script th:src="@{/js/globals.js}"></script>
     <script th:src="@{/js/navbar.js}"></script>
     <script th:src="@{/js/reviews.js}"></script>
@@ -16,10 +16,16 @@
         .film-card {
             background-color: #1a1a1a; /* Dark background for the film card */
             color: white; /* White text color */
-            padding: 2rem; /* Padding around the content */
+            padding: 2rem 0; /* Padding around the content */
             border-radius: 8px; /* Rounded corners */
             box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Subtle shadow for depth */
             width: 70%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            gap: 10px;
         }
 
         .film-description {
@@ -36,6 +42,14 @@
         .film-image img {
             max-width: 100%; /* Ensure the image is not oversized */
             border-radius: 8px; /* Rounded corners for the image */
+        }
+
+        @media (min-width: 900px) {
+            .film-card {
+                flex-direction: row;
+                text-align: start;
+                gap: 0;
+            }
         }
     </style>
 </head>
