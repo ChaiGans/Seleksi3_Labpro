@@ -19,6 +19,7 @@ services:
       AWS_SESSION_TOKEN: rsbcN3btPLK5dBWdHKQLtaOlYkJ1klz4TE7W9bDc
       SPRING_SERVLET_MULTIPART_MAX-FILE-SIZE: 100MB
       SPRING_SERVLET_MULTIPART_MAX-REQUEST-SIZE: 100MB
+      SERVER_PORT: 8080
     networks:
       labpro-network:
         aliases:
@@ -37,6 +38,7 @@ services:
       POSTGRES_DB: owca
     volumes:
       - ./data:/var/lib/postgresql/data
+      - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
     ports:
       - 5432:5432
     networks:

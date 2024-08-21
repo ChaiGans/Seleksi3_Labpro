@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  app:
+    image: chaigans/owca:latest
+    ports:
+      - "80:80"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://owca-database-mahasiswa-55f7.h.aivencloud.com:17444/defaultdb?user=avnadmin&password=AVNS_3D_ytHfiKeD5fs5L4l_&sslmode=require
+      SPRING_DATASOURCE_USERNAME: avnadmin
+      SPRING_DATASOURCE_PASSWORD: AVNS_3D_ytHfiKeD5fs5L4l_
+      SPRING_JPA_HIBERNATE_DDL-AUTO: update
+      AWS_S3_ENDPOINTURL: https://7076bb96d38b123ec74a7843bc674a94.r2.cloudflarestorage.com
+      AWS_S3_REGION: apac
+      AWS_ACCESSKEY: 7af4bd716d17248f68a344eb72a767b3
+      AWS_SECRETKEY: 32bb6b0135173d6ecddbc4a2328584834f8c834ea41e80b5e1299e60393303bb
+      AWS_SESSION_TOKEN: rsbcN3btPLK5dBWdHKQLtaOlYkJ1klz4TE7W9bDc
+      SPRING_SERVLET_MULTIPART_MAX-FILE-SIZE: 100MB
+      SPRING_SERVLET_MULTIPART_MAX-REQUEST-SIZE: 100MB
+      SERVER_PORT: 80
+    networks:
+      labpro-network:
+        aliases:
+          - app.labpro.local
+networks:
+  labpro-network:
