@@ -16,3 +16,5 @@ docker compose stop
 ![Screenshot (2367)](https://github.com/user-attachments/assets/24f8ff84-d440-429a-ab75-f1b6d8a3e204)
 ![Screenshot (2368)](https://github.com/user-attachments/assets/bcda6194-3491-4dff-82bb-2db3d744fb88)
 ![Screenshot (2363)](https://github.com/user-attachments/assets/4bdbe59d-30eb-4bdc-b770-89fa52d5dbbd)
+
+deployment url :  https://owca-please.azurewebsites.net/ (Using Azure)
