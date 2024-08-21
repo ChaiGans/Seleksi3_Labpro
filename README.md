@@ -85,6 +85,67 @@ This section details the technologies used in the OWCA web application, includin
 - **Cloudflare R2**: Storage solution used for hosting images and videos efficiently, integrating seamlessly with the web application for content delivery.
 - **Azure**: Comprehensive cloud platform used for deploying and managing the application's services, enabling scalable hosting, automated management, and integration of various cloud resources.
 
+## API Endpoints
+For a more interactive view and to test these endpoints, please visit the Swagger UI documentation at: [OWCA API Documentation](https://owca-please.azurewebsites.net/swagger-ui/index.html).
+
+### Film REST Controller
+Operations related to films in the database:
+
+- **GET `/films/{id}`**: Retrieves detailed information about a film by its ID.
+- **PUT `/films/{id}`**: Updates the information of a specific film by its ID.
+- **DELETE `/films/{id}`**: Deletes a specific film by its ID.
+- **POST `/films`**: Adds a new film to the database.
+- **GET `/films`**: Fetches information about all films stored in the database.
+
+### Wishlist REST Controller
+Manage user wishlists for films:
+
+- **POST `/wishlists/{id}`**: Creates a new wishlist entry where `{id}` is the film's ID. Requires `userId` in the request body.
+- **DELETE `/wishlists/{id}`**: Removes a wishlist entry based on the film's ID and `userId` provided in the request body.
+
+### User REST Controller
+Operations related to users:
+
+- **POST `/users/{id}/balance`**: Adds balance to a user's account using the user's ID in `{id}`.
+- **GET `/users`**: Retrieves information about all users (typically for admin use).
+- **GET `/users/{id}`**: Retrieves detailed information about a specific user by their ID.
+- **DELETE `/users/{id}`**: Deletes a specific user by their ID.
+
+### Review REST Controller
+Handling of film reviews:
+
+- **POST `/reviews`**: Submits a new review using the request body provided.
+- **DELETE `/reviews/{id}`**: Deletes a specific review by its ID.
+
+### Authentication REST Controller
+Endpoints for authentication and user session management:
+
+- **POST `/login`**: Authenticates a user, intended primarily for admin accounts.
+- **GET `/self`**: Checks if a user is currently logged in and retrieves their session information.
+
+### Registration and Login Controller
+User account management:
+
+- **POST `/api/v1/auth/register`**: Registers a new user account.
+- **POST `/api/v1/auth/logout`**: Logs out a user and clears the session cookie.
+- **POST `/api/v1/auth/login-with-email`**: Allows users to log in using either an email or a username. Initially intended for email only but adapted to accept usernames as well.
+
+### Action REST Controller
+User actions on films:
+
+- **POST `/action/buy/{filmId}`**: Processes the purchase of a film by a logged-in user, identified by their user ID.
+
+## Bonus Feature
+### B02 - Deployment
+### B05 - Lighthouse
+### B06 - Responsive Layout
+### B07 - Dokumentasi API
+### B10 - Fitur Tambahan
+#### 1. Top 5 Bought Films
+#### 2. Rating and Film Review
+#### 3. Wishlist
+### B11 - Ember
+
 ```
 docker compose up
 docker compose stop
