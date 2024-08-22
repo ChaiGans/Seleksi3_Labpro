@@ -84,6 +84,8 @@ This section details the technologies used in the OWCA web application, includin
 - **Aiven**: Cloud service used to deploy and manage the application's database in a scalable manner.
 - **Cloudflare R2**: Storage solution used for hosting images and videos efficiently, integrating seamlessly with the web application for content delivery.
 - **Azure**: Comprehensive cloud platform used for deploying and managing the application's services, enabling scalable hosting, automated management, and integration of various cloud resources.
+- **JPA (Jakarta Persistence API)**: A specification for managing relational data in Java applications. Used extensively in this project for data interactions, particularly in seeding databases and developing repositories.
+- **Hibernate**: An ORM framework that implements JPA specifications, facilitating complex database operations and data management tasks. It is critical in our seeding processes and repository implementations, enabling efficient and flexible data handling.
 
 ## API Endpoints
 For a more interactive view and to test these endpoints, please visit the Swagger UI documentation at: [OWCA API Documentation](https://owca-please.azurewebsites.net/swagger-ui/index.html).
