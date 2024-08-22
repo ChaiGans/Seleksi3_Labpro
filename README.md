@@ -170,10 +170,20 @@ Our comprehensive API documentation includes detailed descriptions of API endpoi
 To explore our API documentation, please visit our Swagger UI:
 [Swagger API Documentation](https://owca-please.azurewebsites.net/swagger-ui/index.html)
 
-### B10 - Fitur Tambahan
+### B10 - Additional Features
+
 #### 1. Top 5 Bought Films
+This feature ranks and displays the top five most popular films based on purchases and wishlist entries combined. The popularity of a film is determined by the total number of purchases added to the number of times it has been added to wishlists. We use a carousel to showcase these top 5 films, providing an engaging visual display of the most sought-after titles.
+![image](https://github.com/user-attachments/assets/33488dc4-e70f-4a96-b615-dc8353178a64)
+
 #### 2. Rating and Film Review
+This feature allows `authenticated users` to leave ratings and reviews that can be read by everyone, including non-logged-in users. This design choice is intended to enrich the information available about each film and to share user testimonials widely. The decision to allow any authenticated user to review, rather than restricting this to buyers only, is based on the possibility that a user might have watched the film elsewhere and chosen not to purchase it through our platform.
+![image](https://github.com/user-attachments/assets/f30a864e-fd14-4e6e-8a45-72a2bf05e560)
+
 #### 3. Wishlist
+This feature allows users to save films they are interested in purchasing later, making it easier to find these films again via the `/my-wish-list` URL. Once a film is purchased, it is automatically removed from the wishlist, helping users keep track of their intended purchases without confusion.
+![image](https://github.com/user-attachments/assets/f3482afd-f85c-4b81-a537-ad8eeb64f191)
+![image](https://github.com/user-attachments/assets/aa8e8720-05d1-4f76-acd3-411f4647b40e)
 
 ### B11 - Ember
 In our application, we utilize bucket storage to separate the storage of our source code from user-uploaded files such as films, images, videos, and binaries. This approach enhances security and scalability by isolating static resources from the application logic.
@@ -189,3 +199,14 @@ We have chosen **Cloudflare R2** as our cloud object storage service due to its 
 # Important Notice: Clear Browser Storage After Account Deletion
 
 Please ensure to clear your browser's cookies and local storage if you encounter issues when attempting to log in. Additionally, it is crucial to note that if you are logged in with an account that is subsequently deleted, the associated session cookies may remain in your browser's storage. To resolve this and continue using the application without interruption, you must manually remove these cookies and local storage entries. Please inform the administrator if you experience this issue.
+
+# Developer Challenges
+
+This section is intended for developers and future users of this project, providing insights into the challenges faced during development.
+
+One significant challenge encountered was implementing a `polling` mechanism. While this process is relatively straightforward in vanilla HTML or React JSX, integrating it with `Thymeleaf` introduced complexities. The addition of Thymeleaf-specific attributes such as `th:` and `sec:authorize` initially led to confusion due to their custom nature.
+
+Additionally, deployment posed its own set of challenges, particularly when attempting to host both the database and application on the same machine using Docker. This configuration led to conflicting ports, as illustrated in the error shown below:
+![WhatsApp Image 2024-08-21 at 17 14 46_bfe72331](https://github.com/user-attachments/assets/7ba17cd3-ab2b-4b44-b2ce-899a7d5bea1a)
+
+Ultimately, a solution was proposed by a colleague to separate the database from the application. This led to the decision to deploy the database on the cloud using Aiven, allowing the application to operate as a single-container setup. This approach resolved the port conflicts and streamlined the deployment process.
