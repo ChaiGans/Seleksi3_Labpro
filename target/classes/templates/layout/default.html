@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Application</title>
+</head>
+<body>
+<header class="header dark:bg-gray-900" th:fragment="header">
+    <a th:href="@{/}" class="logo">
+        <span class="text-2xl font-semibold text-white">OWCA</span>
+        <img th:src="@{/images/platipus.png}" style="width: 50px; object-fit: cover; object-position: center; margin-bottom: 10px" alt="logo platipus">
+    </a>
+    <input class="menu-btn" type="checkbox" id="menu-btn" />
+    <label class="menu-icon" for="menu-btn"><span class="navicon"></span></label>
+    <ul class="menu">
+        <li class="flex justify-center items-center">
+            <a th:href="@{/}" data-path="/" class="text-white nav-link">Home</a>
+        </li>
+        <li class="flex justify-center items-center">
+            <a th:href="@{/browse}" data-path="/browse" class="text-white nav-link">Browse</a>
+        </li>
+        <li sec:authorize="isAuthenticated()" class="flex justify-center items-center">
+            <a th:href="@{/my-list}" data-path="/my-list" class="text-white nav-link">My List</a>
+        </li>
+        <li sec:authorize="isAuthenticated()" class="flex justify-center items-center">
+            <a th:href="@{/my-wish-list}" data-path="/my-wish-list" class="text-white nav-link">Wishlist</a>
+        </li>
+        <li sec:authorize="!isAuthenticated()" class="flex justify-center items-center">
+            <a th:href="@{/login}" data-path="/login" class="text-white nav-link">Login</a>
+        </li>
+        <li sec:authorize="!isAuthenticated()" class="flex justify-center items-center">
+            <a th:href="@{/register}" data-path="/register" class="text-white nav-link">Register</a>
+        </li>
+        <li sec:authorize="isAuthenticated()" class="flex justify-center items-center">
+            <form th:action="@{/api/v1/auth/logout}" method="post" id="logoutForm">
+                <button type="submit" style="cursor: pointer;" class="text-white nav-link text-center">Logout</button>
+            </form>
+        </li>
+    </ul>
+</header>
+
+<footer th:fragment="footer" class="shadow dark:bg-gray-900">
+    <div class="w-full max-w-screen-xl mx-auto p-4 md:py-8">
+        <hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
+        <span class="block text-sm text-gray-500 sm:text-center dark:text-gray-400" style="color: #E2E8F0;">© 2024 OWCA™. All Rights Reserved.</span>
+    </div>
+</footer>
+
+</body>
+</html>

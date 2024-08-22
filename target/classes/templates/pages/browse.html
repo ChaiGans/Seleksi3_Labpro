@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6" lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1, maximum-scale=5">
+    <meta name="description" content="This is browse page.">
+    <title>Browse Film</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" async/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/pagination.css}" async/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}" async>
+    <script th:src="@{/js/globals.js}" defer></script>
+    <script th:src="@{/js/navbar.js}" defer></script>
+    <script th:src="@{/js/wishlists.js}" defer></script>
+    <script th:src="@{/js/auth.js}" defer></script>
+    <style>
+        @media (min-width: 720px) {
+            .film-card {
+                margin-right: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div th:replace="~{layout/default :: header}"></div>
+
+<form method="get" th:action="@{/browse}" class="w-full" style="padding: 20px 60px; background-color: black">
+    <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+    <div class="relative">
+        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+            </svg>
+        </div>
+        <input type="search" name="q" id="default-search" class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search Mockups, Logos..." />
+        <button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
+    </div>
+</form>
+
+<div sec:authorize="isAuthenticated()" style="background-color: black; padding: 10px 60px; width: 100%">
+    <label style="background-color: aqua; padding: 10px 20px; border-radius: 100px; font-style: italic" class="font-bold" th:text="'Your balance :' + '🪙 ' + ${balance}"></label>
+</div>
+
+<section style="padding: 4rem" class="flex justify-center items-center flex-row flex-wrap min-h-screen bg-black">
+    <h1 th:if="${films.size()} == 0" style="color: white; font-size: 80px; text-align: center">
+        BROWSE LIST IS EMPTY.
+    </h1>
+    <!--/*@thymesVar id="films" type="List<String>s"*/-->
+    <div class="col-md-4 mb-4" th:each="film : ${films}">
+        <!--/*@thymesVar id="film" type="seleksi.labpro.owca.dto.FilmDto"*/-->
+        <!--/*@thymesVar id="currentLoginUser" type="seleksi.labpro.owca.entity.User"*/-->
+        <div th:replace="~{components/_filmCard :: filmCard (
+        filmId = ${film.getId()},
+        filmTitle = ${film.getTitle()},
+        filmDescription = ${film.getDescription()},
+        filmDirector = ${film.getDirector()},
+        filmYear = ${film.getReleaseYear()},
+        filmCoverImage = ${film.getCoverImageUrl()},
+        filmPrice = ${film.getPrice()},
+        filmDirector = ${film.getDirector()},
+        filmDuration = ${film.getFormattedTime()},
+        filmGenres = ${film.getGenres()},
+        boughtStatus = ${film.getBought()},
+        currentLoginId = ${currentLoginUser.getId()},
+        isWishlisted = ${film.getIsWishlisted()}
+        )}"></div>
+    </div>
+
+</section>
+<div th:if="${films.size() > 0}" class="pagination">
+    <ul class="pagination-list">
+        <!--/*@thymesVar id="currentPage" type="java.lang.Integer"*/-->
+        <!--/*@thymesVar id="totalPages" type="java.lang.Integer"*/-->
+        <!--/*@thymesVar id="size" type="java.lang.Integer"*/-->
+        <!--/*@thymesVar id="query" type="java.lang.String"*/-->
+        <li th:if="${currentPage != 0}">
+            <a th:href="@{/browse(page=${currentPage - 1}, size=${size}, q=${query})}">&laquo; Previous</a>
+        </li>
+        <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+            <a th:href="@{/browse(page=${i}, size=${size}, q=${query})}" th:text="${i + 1}" th:class="${currentPage == i ? 'active' : ''}"></a>
+        </li>
+        <li th:if="${currentPage + 1 < totalPages}">
+            <a th:href="@{/browse(page=${currentPage + 1}, size=${size}, q=${query})}">Next &raquo;</a>
+        </li>
+    </ul>
+</div>
+<div th:replace="~{layout/default :: footer}"></div>
+</body>
+</html>

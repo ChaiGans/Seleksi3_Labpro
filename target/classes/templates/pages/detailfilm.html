@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1, maximum-scale=5">
+    <meta name="description" content="This is detail film page.">
+    <title>Film Details</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/pagination.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}" async>
+    <script th:src="@{/js/globals.js}"></script>
+    <script th:src="@{/js/navbar.js}"></script>
+    <script th:src="@{/js/reviews.js}"></script>
+    <script th:src="@{/js/auth.js}" defer></script>
+    <style>
+        .film-card {
+            background-color: #1a1a1a; /* Dark background for the film card */
+            color: white; /* White text color */
+            padding: 2rem 0; /* Padding around the content */
+            border-radius: 8px; /* Rounded corners */
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+            width: 70%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            gap: 10px;
+        }
+
+        .film-description {
+            background-color: #333; /* Slightly lighter background for the description */
+            padding: 1rem; /* Padding inside the description box */
+            border-radius: 4px; /* Rounded corners for the description box */
+            color: #ddd; /* Light grey text for readability */
+        }
+
+        .film-meta label {
+            margin-right: 1rem; /* Space between labels */
+        }
+
+        .film-image img {
+            max-width: 100%; /* Ensure the image is not oversized */
+            border-radius: 8px; /* Rounded corners for the image */
+        }
+
+        @media (min-width: 900px) {
+            .film-card {
+                flex-direction: row;
+                text-align: start;
+                gap: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+<div th:replace="~{layout/default :: header}"></div>
+
+<!--/*@thymesVar id="film" type="seleksi.labpro.owca.entity.Film"*/-->
+<section class="bg-black min-h-screen flex flex-col items-center justify-center" style="padding: 100px 0px">
+    <div class="film-card flex flex-row">
+        <div class="flex items-center justify-center film-image w-1/2">
+            <img style="max-width: 300px" th:src="${film.getCoverImageUrl()}" alt="Film Cover Image">
+        </div>
+        <div class="film-details w-1/2 flex flex-col space-y-4">
+            <h2 class="text-2xl font-bold" style="font-style: italic" th:text="${film.getTitle()} + ' (' + ${film.getReleaseYear()} + ')'"></h2>
+            <label th:text="'Genres: ' + ${film.getGenres()}"></label>
+            <label th:text="'Price: ' + ${film.getPrice()} + ' 🪙'"></label>
+            <label th:text="'Director: ' + ${film.getDirector()}"></label>
+            <!--/*@thymesVar id="formattedDuration" type="java.lang.String"*/-->
+            <label th:text="'Duration: ' + ${formattedDuration}"></label>
+            <div class="film-description" th:text="${film.getDescription()}"></div>
+        </div>
+    </div>
+    <!--/*@thymesVar id="isBought" type="java.lang.Boolean"*/-->
+    <div sec:authorize="isAuthenticated()" style="margin-top: 30px; display: flex; flex-direction: column">
+        <div style="display: flex; flex-direction: column" th:if="${!isBought}">
+            <label style="color: white; font-size: 30px" class="font-bold">Buy to watch trailer</label>
+            <form method="post" class="buyForm w-full" th:action="@{'/action/buy/' + ${film.getId()}}">
+                <button
+                        style="background-color: limegreen; padding: 10px 4px; border-radius: 10px; font-style: oblique; color: antiquewhite"
+                        class="buy-button font-bold w-full">Buy
+                </button>
+            </form>
+        </div>
+        <video th:if="${isBought}" width="640" height="480" controls>
+            <source th:src="${film.getVideoUrl()}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    <div sec:authorize="!isAuthenticated()" style="margin-top: 30px; display: flex; flex-direction: column">
+        <div style="display: flex; flex-direction: column" th:if="${!isBought}">
+            <label style="color: white; font-size: 30px" class="font-bold">Login first to buy</label>
+            <a th:href="${'/login'}" class="w-full">
+                <button
+                    style="background-color: limegreen; padding: 10px 4px; border-radius: 10px; font-style: oblique; color: antiquewhite"
+                    class="buy-button font-bold w-full">Login
+                </button>
+            </a>
+
+        </div>
+        <video th:if="${isBought}" width="640" height="480" controls>
+            <source th:src="${film.getVideoUrl()}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+</section>
+
+<!-- Review Section Container -->
+<section style="padding-left: 10rem; padding-right: 10rem; padding-bottom: 10rem" class="bg-black text-white flex flex-col items-center justify-center">
+    <h1 style="font-style: italic; font-size: 40px" class="font-bold italic mb-8">Reviews</h1>
+
+    <!-- Reviews Container -->
+    <div  class="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!--/*@thymesVar id="review" type="seleksi.labpro.owca.dto.ReviewDto"*/-->
+        <div th:each="review : ${reviews}" class="p-4 bg-gray-800 rounded-lg shadow-lg">
+            <!--/*@thymesVar id="currentLoginUser" type="seleksi.labpro.owca.entity.User"*/-->
+            <div th:replace="~{components/_reviewCard :: reviewCard (${review.getId()}, ${review.getCreatorUsername()}, ${review.getRating()}, ${review.getComment()}, ${currentLoginUser.getRealUsername()})}"></div>
+        </div>
+    </div>
+    <form sec:authorize="isAuthenticated()" th:action="@{'/reviews'}" style="margin-top: 4rem;" method="POST" id="reviewForm" class="w-full mb-8">
+        <h1 class="font-bold" style="font-style: italic; font-size: 30px">Leave some review</h1>
+        <div class="flex flex-col gap-4 bg-gray-800 p-4 rounded-lg shadow-lg">
+            <div>
+                <label for="comment" class="block text-sm font-semibold mb-2">Your Comment</label>
+                <textarea id="comment" name="comment" rows="4" required
+                          class="w-full p-2 text-black rounded-md"></textarea>
+            </div>
+
+            <div>
+                <label for="rating" class="block text-sm font-semibold mb-2">Your Rating</label>
+                <select id="rating" name="rating" required class="w-full p-2 text-black rounded-md">
+                    <option value="">Select a Rating</option>
+                    <option value="1">1 - Poor</option>
+                    <option value="2">2 - Fair</option>
+                    <option value="3">3 - Good</option>
+                    <option value="4">4 - Very Good</option>
+                    <option value="5">5 - Excellent</option>
+                </select>
+            </div>
+
+            <input name="filmId" style="display: none" th:value="${currentFilmId}">
+            <!--/*@thymesVar id="currentLoginUser" type="seleksi.labpro.owca.entity.User"*/-->
+            <input name="userId" style="display: none" th:value="${currentLoginUser.getId()}">
+
+            <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
+                Submit Review
+            </button>
+        </div>
+    </form>
+</section>
+
+
+<div th:replace="~{layout/default :: footer}"></div>
+</body>
+</html>

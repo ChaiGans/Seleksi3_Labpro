@@ -1,0 +1,29 @@
+.pagination {
+    background-color: black;
+    height: fit-content;
+    padding-bottom: 60px;
+}
+
+.pagination ul {
+    display: flex;
+    justify-content: center; /* Center pagination horizontally */
+    flex-wrap: wrap; /* Allows pagination items to wrap onto the next line on smaller screens */
+    list-style: none;
+    padding-left: 0;
+}
+
+.pagination-list li {
+    margin: 5px;
+}
+
+.pagination-list li a {
+    padding: 8px 16px; /* Sufficient padding for tap targets */
+    min-width: 40px; /* Ensures that each pagination button has a minimum width */
+    text-align: center; /* Centers the text within the pagination link */
+}
+
+
+.pagination-list li a.active,
+.pagination-list li a:hover {
+    background-color: #555;
+}

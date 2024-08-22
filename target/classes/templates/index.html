@@ -1,0 +1,96 @@
+<!DOCTYPE HTML>
+<html
+    lang="en"
+    xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1, maximum-scale=5">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="This is home page.">
+    <title>Home Page</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" async>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/font.css}" async>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/animate.css}" async>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/carousel.css}" async>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}" async>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}" async>
+    <script th:src="@{/js/navbar.js}" defer></script>
+    <script th:src="@{/js/auth.js}" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gupter:wght@400;500;700&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+</head>
+<body class="h-screen flex flex-col">
+<div th:replace="~{layout/default :: header}"></div>
+<section class="main-section">
+    <div class="flex flex-col h-full w-full justify-center space-y-8 text-white">
+        <label style="font-size: 45px; color: red" class="gupter-bold" sec:authorize="!isAuthenticated()">Welcome to OWCA!</label>
+        <label style="font-size: 45px; color: red" class="gupter-bold" sec:authorize="isAuthenticated()" th:text="'Welcome to OWCA, ' + ${username} + '!'" ></label>
+        <p class="gupter-regular" style="text-align: justify; font-size: 20px">Dive into the world of movies with CinemaScope, your ultimate destination for all things cinema. Discover the latest releases, explore timeless classics, and get exclusive insights into upcoming blockbusters. Whether you're a casual viewer or a film aficionado, CinemaScope brings you closer to the magic of movies. Browse through our extensive library, read reviews, watch trailers, and even book tickets for your next movie experience—all in one place!</p>
+        <label class="gupter-medium" style="text-align: center;">~ Experience Cinema Like Never Before ~</label>
+        <div class="flex w-full justify-center">
+            <a th:href="@{/browse}" class="w-full justify-center flex">
+                <button class="gupter-bold get-started" style="background-color: #8B0000; color: white; padding: 10px 20px; font-size: 16px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">
+                    Get Started
+                </button>
+            </a>
+        </div>
+    </div>
+    <div class="joker-image flex justify-center items-center">
+        <img loading="lazy" class="float-animate" style="height: 400px; width: 300px; object-fit: cover; object-position: center; margin-left: 10px;" th:src="@{/images/joker.png}" alt="Joker image">
+    </div>
+
+</section>
+
+<div class="topBuyFilm" style="background-color: black">
+    <div class="topFilm">
+        <h1 class="gupter-bold" style="color: white; font-style: italic; font-size: 40px; text-align: center">TOP 5 BOUGHT FILMS</h1>
+        <section class="carousel" aria-label="Gallery">
+            <ol class="carousel__viewport">
+                <li th:each="film, iterStat : ${topBoughtFilms}" th:id="'carousel__slide' + ${iterStat.index+1}"
+                    tabindex="0" class="carousel__slide">
+                    <div class="carousel__snapper">
+                        <a th:href="'#carousel__slide' + ( ${iterStat.count} == 1 ? ${topBoughtFilms.size} : ${iterStat.index} )"
+                           class="carousel__prev">Go to last slide</a>
+                        <a th:href="'#carousel__slide' + ( ${iterStat.count} == ${topBoughtFilms.size} ? 1 : ${iterStat.index+2} )"
+                           class="carousel__next">Go to next slide</a>
+                        <div class="film-card">
+                            <!--/*@thymesVar id="film" type="seleksi.labpro.owca.dto.TopFilmDto"*/-->
+                            <img th:src="${film.coverImageUrl}" alt="Cover Image" class="film-card__image"/>
+                            <div class="film-card__info">
+                                <label style="font-style: italic" th:text="'TOP ' + ${iterStat.index + 1}" class="gupter-bold film-card__title"></label>
+                                <label th:text="${film.title} + ' (' + ${film.getReleaseYear()} + ')'" class="film-card__title"></label>
+                                <p th:text="'Director: ' + ${film.getDirector()}" class="film-card__description"></p>
+                                <p th:text="${film.description}" class="film-card__description"></p>
+                                <p class="film-card__duration"><strong>Duration:</strong> <span th:text="${film.formattedTime}"></span></p>
+                                <a th:href="@{'/details/film/' + ${film.getId()}}" class="filmCard">
+                                    <button
+                                            style="background-color: #2563EB; padding: 10px 4px; border-radius: 10px; font-style: oblique; color: white; margin-top: 15px; margin-bottom: 15px"
+                                            class="w-full font-bold"
+                                            th:data-film-id="${film.getId()}"
+                                    >
+                                        View Detail
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ol>
+            <aside th:if="${topBoughtFilms.size() > 0}" class="carousel__navigation">
+                <ol class="carousel__navigation-list">
+                    <li th:each="film, iterStat : ${topBoughtFilms}" class="carousel__navigation-item">
+                        <a th:href="'#carousel__slide' + ${iterStat.index+1}"
+                           class="carousel__navigation-button" th:text="'Go to slide ' + (iterStat.index+1)"></a>
+                    </li>
+                </ol>
+            </aside>
+        </section>
+    </div>
+</div>
+
+<div th:replace="~{layout/default :: footer}"></div>
+</body>
+</html>
