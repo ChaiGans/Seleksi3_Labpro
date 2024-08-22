@@ -44,11 +44,23 @@
             border-radius: 8px; /* Rounded corners for the image */
         }
 
+        .review-section {
+            padding-left: 2rem;
+            padding-right: 2rem;
+        }
+
+
         @media (min-width: 900px) {
             .film-card {
                 flex-direction: row;
                 text-align: start;
                 gap: 0;
+            }
+
+            .review-section {
+                padding-left: 10rem;
+                padding-right: 10rem;
+                padding-bottom: 10rem;
             }
         }
     </style>
@@ -107,7 +119,7 @@
 </section>
 
 <!-- Review Section Container -->
-<section style="padding-left: 10rem; padding-right: 10rem; padding-bottom: 10rem" class="bg-black text-white flex flex-col items-center justify-center">
+<section class="review-section bg-black text-white flex flex-col items-center justify-center">
     <h1 style="font-style: italic; font-size: 40px" class="font-bold italic mb-8">Reviews</h1>
 
     <!-- Reviews Container -->

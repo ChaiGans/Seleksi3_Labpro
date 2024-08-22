@@ -63,7 +63,7 @@
                                 <label style="font-style: italic" th:text="'TOP ' + ${iterStat.index + 1}" class="gupter-bold film-card__title"></label>
                                 <label th:text="${film.title} + ' (' + ${film.getReleaseYear()} + ')'" class="film-card__title"></label>
                                 <p th:text="'Director: ' + ${film.getDirector()}" class="film-card__description"></p>
-                                <p th:text="${film.description}" class="film-card__description"></p>
+                                <p th:text="${film.description} + '...'" style="text-align: justify" class="film-card__description"></p>
                                 <p class="film-card__duration"><strong>Duration:</strong> <span th:text="${film.formattedTime}"></span></p>
                                 <a th:href="@{'/details/film/' + ${film.getId()}}" class="filmCard">
                                     <button

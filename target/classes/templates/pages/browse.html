@@ -12,9 +12,17 @@
     <script th:src="@{/js/wishlists.js}" defer></script>
     <script th:src="@{/js/auth.js}" defer></script>
     <style>
+        .searchForm {
+            padding: 130px 0px 0px 0px;
+            background-color: black;
+        }
         @media (min-width: 720px) {
             .film-card {
                 margin-right: 40px;
+            }
+
+            .searchForm {
+                padding: 130px 100px 0px 100px;
             }
         }
     </style>
@@ -22,7 +30,7 @@
 <body>
 <div th:replace="~{layout/default :: header}"></div>
 
-<form method="get" th:action="@{/browse}" class="w-full" style="padding: 20px 60px; background-color: black">
+<form method="get" th:action="@{/browse}" class="searchForm w-full">
     <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
     <div class="relative">
         <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -35,7 +43,7 @@
     </div>
 </form>
 
-<div sec:authorize="isAuthenticated()" style="background-color: black; padding: 10px 60px; width: 100%">
+<div sec:authorize="isAuthenticated()" style="background-color: black; padding: 30px 60px; width: 100%">
     <label style="background-color: aqua; padding: 10px 20px; border-radius: 100px; font-style: italic" class="font-bold" th:text="'Your balance :' + '🪙 ' + ${balance}"></label>
 </div>
 

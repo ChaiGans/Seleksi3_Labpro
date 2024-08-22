@@ -62,15 +62,21 @@ public class HomeController {
         List<Film> allTopBoughtFilms = allFilms.size() > 5 ? allFilms.subList(0, 5) : allFilms;
 
         List<TopFilmDto> allTopBoughtDtos = allTopBoughtFilms.stream()
-                .map(film -> new TopFilmDto(
-                        film.getId(),
-                        film.getCoverImageUrl(),
-                        film.getDescription(),
-                        film.getTitle(),
-                        film.getReleaseYear(),
-                        TimeFormatUtil.formatDuration(film.getDuration()),
-                        film.getDirector()
-                ))
+                .map(film -> {
+                    String description = film.getDescription();
+                    if (description.length() > 300) {
+                        description = description.substring(0, 300);
+                    }
+                    return new TopFilmDto(
+                            film.getId(),
+                            film.getCoverImageUrl(),
+                            description,
+                            film.getTitle(),
+                            film.getReleaseYear(),
+                            TimeFormatUtil.formatDuration(film.getDuration()),
+                            film.getDirector()
+                    );
+                })
                 .collect(Collectors.toList());
         model.addAttribute("topBoughtFilms", allTopBoughtDtos);
 
