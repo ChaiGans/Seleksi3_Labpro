@@ -44,8 +44,8 @@
 
 </section>
 
-<div class="topBuyFilm" style="background-color: black">
-    <div class="topFilm">
+<div th:if="${topBoughtFilms.size() > 0}" class="topBuyFilm" style="background-color: black">
+    <div class="topFilm">s
         <h1 class="gupter-bold" style="color: white; font-style: italic; font-size: 40px; text-align: center">TOP 5 BOUGHT FILMS</h1>
         <section class="carousel" aria-label="Gallery">
             <ol class="carousel__viewport">
