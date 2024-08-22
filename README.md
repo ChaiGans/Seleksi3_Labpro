@@ -41,6 +41,15 @@ Follow these steps to get the project up and running on your local machine:
    docker compose down
    ```
 
+If meet this error app-1       
+```| 2024-08-22T10:32:57.948Z  WARN 1 --- [owca] [           main] o.h.e.j.e.i.JdbcEnvironmentInitiator     : HHH000342: Could not obtain connection to query metadata
+app-1       |
+app-1       | java.lang.NullPointerException: Cannot invoke "org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(java.sql.SQLException, String)" because the return value of "org.hibernate.resource.transaction.backend.jdbc.internal.JdbcIsolationDelegate.sqlExceptionHelper()" is null
+app-1       |   at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcIsolationDelegate.delegateWork(JdbcIsolationDelegate.java:116) ~[hibernate-core-6.5.2.Final.jar!/:6.5.2.Final]
+app-1       |   at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.getJdbcEnvironmentUsingJdbcMetadata(JdbcEnvironmentInitiator.java:290) ~[hibernate-core-6.5.2.Final.jar!/:6.5.2.Final]
+```
+just do `docker compose up --build` once again. This should resolve the problem.
+
 ### Note
 This repository contains two Docker Compose files:
 - `docker-compose.yml`: For local development. It configures the database and web application to run on the same machine.
