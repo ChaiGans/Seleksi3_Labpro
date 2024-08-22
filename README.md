@@ -137,27 +137,18 @@ User actions on films:
 
 ## Bonus Feature
 ### B02 - Deployment
+This application is deployed on [Azure](https://azure.microsoft.com/en-us/) using the following architecture:
+
+- **Database**: We utilize a PostgreSQL database hosted on [Aiven's](https://aiven.io/) free service, ensuring our application can manage data in the cloud efficiently.
+- **Containerization**: The application is containerized using Docker, with images built locally and pushed to [Docker Hub](https://hub.docker.com/). This approach facilitates easy updates and consistency across different environments.
+- **Configuration**: Deployment on Azure utilizes a `docker-compose.prod.yml` file found in the repository, which orchestrates the deployment process using Docker Compose.
+
+**Deployment URL**: [https://owca-please.azurewebsites.net/](https://owca-please.azurewebsites.net/)
+
+**Region**: Korea Central on a Free plan. Please note that the performance may be intermittent and laggy due to the limitations of the free service tier.
+
 ### B05 - Lighthouse
-### B06 - Responsive Layout
-### B07 - Dokumentasi API
-### B10 - Fitur Tambahan
-#### 1. Top 5 Bought Films
-#### 2. Rating and Film Review
-#### 3. Wishlist
-### B11 - Ember
-
-```
-docker compose up
-docker compose stop
-```
-
-![img_1](https://github.com/user-attachments/assets/41d1b601-e527-4f1f-81b3-170bcc15c20c)
-![img](https://github.com/user-attachments/assets/b2e36dee-ffac-48eb-961f-3358a7e272e1)
-![img_6](https://github.com/user-attachments/assets/0bc9b200-962c-4848-bea1-ee73876ebda3)
-![img_5](https://github.com/user-attachments/assets/7445c3f4-cf83-40ad-8569-bb77963f5bfc)
-![img_4](https://github.com/user-attachments/assets/cc2a30c5-0c50-45e5-9b85-a9c24303ef25)
-![img_3](https://github.com/user-attachments/assets/ea9225a3-ee2a-40d7-8f68-c2fc604be861)
-![img_2](https://github.com/user-attachments/assets/668072f3-c5a9-47c2-b6cf-7363e3dfcee8)
+`Google Lighthouse` is an open-source automated tool developed by Google to audit or measure the quality of web applications. This tool aids web developers in improving their projects. In this bonus feature, we guarantee a performance score of **at least 95**. However, certain aspects, such as accessibility, may not reach this threshold, **achieving scores between 92 and 94**. This is often due to choices in color contrast that, while aesthetically pleasing, may not meet Lighthouse's strictest standards. Additionally, certain intentional sizing and positioning of icons and buttons are designed to enhance UI aesthetics at the expense of Lighthouse scores. Despite these deviations, the average score **remains above 95**, with **no scores lower than 90**, which should be considered as `PASS`.
 ![Screenshot (2364)](https://github.com/user-attachments/assets/35b67474-0e19-476c-96ad-732a749ba31c)
 ![Screenshot (2365)](https://github.com/user-attachments/assets/44657236-36c5-4041-b363-52091d75b315)
 ![Screenshot (2366)](https://github.com/user-attachments/assets/024f8b68-623e-4ea4-8102-6d8cb30a13a5)
@@ -165,4 +156,36 @@ docker compose stop
 ![Screenshot (2368)](https://github.com/user-attachments/assets/bcda6194-3491-4dff-82bb-2db3d744fb88)
 ![Screenshot (2363)](https://github.com/user-attachments/assets/4bdbe59d-30eb-4bdc-b770-89fa52d5dbbd)
 
-deployment url :  https://owca-please.azurewebsites.net/ (Using Azure)
+### B06 - Responsive Layout
+A responsive layout ensures that your web application adapts seamlessly across different screen sizes and devices, providing an optimal viewing and interaction experience. This feature is crucial in modern web design, where users access sites from a wide array of devices including smartphones, tablets, and desktop computers.
+
+Developer's implementation utilizes flexible grid layouts, media queries, and dynamic CSS styles that adjust based on the device's screen properties. The goal is to maintain functionality and aesthetics, ensuring that elements such as navigation bars, sidebars, images, and text are legible and accessible regardless of the device used.
+
+### B07 - API Documentation
+
+Good developers document their work to ensure it is readable and easily understandable by others. API documentation is essential for providing clear guidelines on how to interact with the backend services of an application. We use Swagger for documenting both our single service and monolithic service architectures, making it easy for developers to get up to speed quickly.
+
+Our comprehensive API documentation includes detailed descriptions of API endpoints, expected request formats, possible response codes, and interactive examples. This helps in reducing the learning curve and accelerating the integration process for developers working with our APIs.
+
+To explore our API documentation, please visit our Swagger UI:
+[Swagger API Documentation](https://owca-please.azurewebsites.net/swagger-ui/index.html)
+
+### B10 - Fitur Tambahan
+#### 1. Top 5 Bought Films
+#### 2. Rating and Film Review
+#### 3. Wishlist
+
+### B11 - Ember
+In our application, we utilize bucket storage to separate the storage of our source code from user-uploaded files such as films, images, videos, and binaries. This approach enhances security and scalability by isolating static resources from the application logic.
+
+We have chosen **Cloudflare R2** as our cloud object storage service due to its cost-effectiveness—it offers a free plan. Cloudflare R2 is highly scalable and provides reliable storage solutions without egress fees, making it an ideal choice for startups and independent developers.
+
+**Storage Limitations:**
+- **Capacity**: Our Cloudflare R2 plan is limited to 1GB of storage.
+- **Shared Usage**: The bucket is shared with a colleague, which might occasionally lead to capacity issues. Users of this application should be aware that the storage might reach its full capacity, potentially impacting the ability to upload new films.
+
+**DO CONTACT `elbertchailes888@gmail.com` if the storage of bucket is full. Or there is issue that causing errors.**
+
+# Important Notice: Clear Browser Storage After Account Deletion
+
+Please ensure to clear your browser's cookies and local storage if you encounter issues when attempting to log in. Additionally, it is crucial to note that if you are logged in with an account that is subsequently deleted, the associated session cookies may remain in your browser's storage. To resolve this and continue using the application without interruption, you must manually remove these cookies and local storage entries. Please inform the administrator if you experience this issue.
